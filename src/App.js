@@ -2,7 +2,7 @@
 
 //IMPORTS
 import React from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Report from './Components/Report';
 
 //ENVIRONMENT

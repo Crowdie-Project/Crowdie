@@ -6,6 +6,7 @@ const devEnvironmentVariables = {
 };
 
 const prodEnvironmentVariables = {
+  
 };
 
 export default __DEV__ ? devEnvironmentVariables : prodEnvironmentVariables;
