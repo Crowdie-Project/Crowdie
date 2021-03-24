@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text } from 'react-native';
 import Report from './Components/Report';
 import {supabase} from './Components/Supabase.js';
+import MapEditor from './Components/MapEditor';
 //ENVIRONMENT
 //import env from './config/env';
 //console.log(env);
