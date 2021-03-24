@@ -1744,6 +1744,11 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-picker/picker@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.12.0.tgz#215d7c950935c8f1a834af0832a93122b4bab0f1"
+  integrity sha512-LxtFcuQ/jxsNwH9byM4mMSusqGfaj0LHXTh6fJgvIKOBjAWwV+FjWHszQSPCbnycdezirf8dFLhF9phcNuE8CA==
+
 "@supabase/gotrue-js@^1.12.0":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@supabase/gotrue-js/-/gotrue-js-1.12.0.tgz#79db9634a0bff850e33525f46cd98d5be0e1b43e"
