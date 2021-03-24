@@ -3,9 +3,9 @@
 //IMPORTS AND REQUIRES
 
 //REACT IMPORTS
-import React, { useEffect, useRef, useState} from 'react';
-import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, TouchableNativeFeedback} from 'react-native';
-
+import React, { useEffect, useState, useRef} from 'react';
+import {View, Text,TextInput, Button, StyleSheet, ScrollView, Alert, Modal, Pressable} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 //SUPABASE IMPORTS
 //import { createClient } from '@supabase/supabase-js';
 
@@ -20,8 +20,8 @@ import Navig from "../Nav";
 //MAIN
 //////////////////
 
-const Report = () => {
-
+const Report = ({reports,setReports}) => {
+  const [modalVisible, setModalVisible] = useState(false);
   
   //Navig instance for geolocation
   const navig = new Navig();
@@ -30,114 +30,138 @@ const Report = () => {
              
 
 
-  const [reports, setReports] = useState([]);
-  const codeRef = useRef();
+ // const [reports, setReports] = useState([]);
   const latRef = useRef();
   const lonRef = useRef();
   //const reporterRef = useRef();
-  //const [errorText, setError] = useState("");
+  const [errorText, setError] = useState("");
 
+  const [selectedEvent, setSelectedEvent] = useState();
+  const eventTypes = {"doğal afetler": "101", "yangın": "102", "sosyal anket":"103"};
 
-  useEffect(() => {
-  
-    // let url = window.location.hash;
-    // let query = url.substr(1);
-    // let result = {};
-
-    // query.split("&").forEach((part) => {
-    //     const item = part.split("=");
-    //     result[item[0]] = decodeURIComponent(item[1]);
-    // });
-
-    // if (result.type === "recovery") {
-    //     setRecoveryToken(result.access_token);
-    // }
-
-    fetchReports().catch(console.error);
-}, []);
-
-  const fetchReports = async () => {
-    let { data: reports, error } = await supabase
-        .from("TestReports")
-        .select("*")
-        .order("id", { ascending: false });
-    if (error) console.log("error", error);
-    else setReports(reports);
-};
 
   const addReport = async () => {
-    let codeText = codeRef.current.value;
-    let code = codeText.trim();
+   
     let latText = latRef.current.value;
     let lat = latText.trim();
     let lonText = lonRef.current.value;
     let lon = lonText.trim();
    // let reporterText = reporterRef.current.value;
    // let reporter = reporterText.trim();
-   
+
+   //if selected item is "seçiniz", user cannot submit report.
+   if (!selectedEvent){
+     return;
+   }
+
     const { data: report, error } = await supabase
     .from('TestReports')
-    .insert([
-      { CODE: code, LAT: lat, LON: lon},
-    ])
+    .insert({ CODE: selectedEvent, LAT: lat, LON: lon})
+    .single();
     if (error) setError(error.message);
     else {
         setReports([report, ...reports]);
         setError(null);
-        codeRef.current.value = "";
-        latRef.current.value = "";
-        lonRef.current.value = "";
+  
+     //   latRef.current.value = "";
+     //   lonRef.current.value = "";
     }
+    setSelectedEvent(null)
+    setModalVisible(!modalVisible)
   };
   
   
 
     return (
-       <View style={styles.container}>
+      <View style={styles.container}> 
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+      <View style={styles.centeredView}>
+      <View style={styles.modalContainer}>
+    
+        <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styles.closeButtonText}>X</Text>
+              
+         </Pressable> 
+      
             <View style={styles.reportWrapper}>
                 
                 <Text style={styles.header}>Reporter Applet</Text>
                 
-                <TextInput ref={codeRef} placeholder="Code" style={styles.input}></TextInput>
+                <Picker style={styles.picker}
+                    selectedValue={selectedEvent}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setSelectedEvent(itemValue)
+                    }>
+                      <Picker.Item label="Seçiniz" value="" />  
+                    {Object.entries(eventTypes).map(([key, value]) => (
+                         <Picker.Item label={key} value={value} /> 
+                    ))}
+                   
+                </Picker>
                 <TextInput ref={latRef} placeholder="Lat" style={styles.input}></TextInput>
                 <TextInput ref={lonRef} placeholder="Lon" style={styles.input}></TextInput>
-                <TextInput  placeholder="Reporter" style={styles.input}></TextInput>
+                <TextInput placeholder="Reporter" style={styles.input}></TextInput>
                 
                 <Button title="submit" onPress={addReport} style={styles.btn} color="#662EDD"></Button>
             </View>
-            <View style={styles.reportWrapper}>
-                
-                <Text style={styles.header}>Reported Events</Text>
-                
-                {reports.length ? (
-                        reports.map((report) => (
-                            <Text style={styles.reports}>code: {report.CODE} lat: {report.LAT} lon: {report.LON}</Text>
-                        ))
-                    ) : (
-                        <Text
-                            className=
-                                "h-full flex justify-center items-center"
-                        >
-                            You do have any reported events yet!
-                        </Text>
-                    )}
-              
-                
                
-            </View>
+      </View> 
       </View>
+
+      </Modal>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.textStyle}>Report</Text>
+      </Pressable>
+    </View>
+     
     );
 };
 
 const styles = StyleSheet.create({
   container: {
-       justifyContent: "space-evenly",
-       flexDirection: "row"
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer:{
+    flexDirection: "column",
+    backgroundColor: "#DEDEDE",
+    width: "fit-content",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(100,100,100,0.75)",
   },
   reportWrapper: {
-    flex:1,
-    padding: 50,
-    width: 400
+    padding: 50
+  },
+  scrollview: {
+    height: 250
   },
   header: {
     fontSize: 30,
@@ -149,14 +173,43 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 20,
-    fontSize: 18,
+    fontSize: 16,
     height: 30,
     paddingHorizontal: 5,
-    borderWidth: 1,
+    backgroundColor: '#EDEDED'
   },
-    btn: {
-      
-    }
+  picker: {
+    marginBottom: 20,
+    fontSize: 16,
+    height: 30,
+    paddingHorizontal: 5,
+    backgroundColor: '#EDEDED'
+  },
+  button: {
+    padding: 10,
+    width: "fit-content",
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#616161",
+  },
+  buttonClose: {
+    alignSelf: "flex-end",
+  },
+  closeButtonText: {
+    color: "#616161",
+    fontWeight: "bold",
+    fontSize: 20
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
   });
 
 export default Report;
