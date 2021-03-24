@@ -4,10 +4,10 @@ import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, Toucha
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 
-
+const MapEditor = () => {
 const position = [51.505, -0.09]
         
-render(
+return (
   <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
     <TileLayer
       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -19,4 +19,7 @@ render(
       </Popup>
     </Marker>
   </MapContainer>
-)
+);
+};
+
+export default MapEditor;
