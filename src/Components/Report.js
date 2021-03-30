@@ -6,6 +6,8 @@
 import React, { useEffect, useState, useRef} from 'react';
 import {View, Text,TextInput, Button, StyleSheet, ScrollView, Alert, Modal, Pressable} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+ 
 //SUPABASE IMPORTS
 //import { createClient } from '@supabase/supabase-js';
 
@@ -22,7 +24,10 @@ import Navig from "../Nav";
 
 const Report = ({reports,setReports}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  
+  var radio_props = [
+    {label: 'param1', value: 0 },
+    {label: 'param2', value: 1 }
+  ];
   //Navig instance for geolocation
   const navig = new Navig();
   //Geolocation array => [longitude, latitude, timestamp]
@@ -108,6 +113,12 @@ const Report = ({reports,setReports}) => {
                     ))}
                    
                 </Picker>
+                <RadioForm
+                    radio_props={radio_props}
+                    initial={0}
+                    onPress={(value) => {this.setState({value:value})}}
+                />
+               
                 <TextInput ref={latRef} placeholder="Lat" style={styles.input}></TextInput>
                 <TextInput ref={lonRef} placeholder="Lon" style={styles.input}></TextInput>
                 <TextInput placeholder="Reporter" style={styles.input}></TextInput>
