@@ -1,25 +1,28 @@
 //REACT IMPORTS
 import React, { useEffect, useRef, useState} from 'react';
 import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, TouchableNativeFeedback} from 'react-native';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-
+import MapView from 'react-native-maps';
 
 const MapEditor = () => {
-const position = [51.505, -0.09]
+const position = [41.191557499999995, 29.0488561]
         
 return (
-  <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
-    <TileLayer
-      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-    <Marker position={position}>
-      <Popup>
-        A pretty CSS3 popup. <br /> Easily customizable.
-      </Popup>
-    </Marker>
-  </MapContainer>
+  <MapView
+    initialRegion={{
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }}
+  />
+
 );
 };
+const styles = StyleSheet.create({
+  mapEditor: {
+    height: 180,
+    width: 180,
+  }
+});
 
 export default MapEditor;
