@@ -6,6 +6,8 @@ import { StyleSheet, View,ScrollView,Text } from 'react-native';
 import Report from './Components/Report';
 import {supabase} from './Components/Supabase.js';
 import MapEditor from './Components/MapEditor';
+
+
 //ENVIRONMENT
 //import env from './config/env';
 //console.log(env);
@@ -44,8 +46,10 @@ export default function App() {
 };
 
   return (
+
+
     <View style={styles.container}>
-         <Report
+      <Report
            reports={reports}
            setReports={setReports}
          />
@@ -65,15 +69,13 @@ export default function App() {
                             You do have any reported events yet!
                         </Text>
                     )}
-              
+                
 
                 </ScrollView>
 
-          </View>
-          <MapEditor/>
-         
-    </View>
-    
+          </View>  
+          <MapEditor style= {styles.mapEditor} rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></MapEditor>    
+    </View> 
   );
 }
 
@@ -98,5 +100,9 @@ const styles = StyleSheet.create({
   },
   reports: {
     fontSize: 14
+  },
+  mapEditor: {
+    height: 180,
+    width: 180,
   }
 });
