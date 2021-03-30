@@ -1,7 +1,7 @@
 # CrowdChain
-CrowdChain Viewer! (TODO: Write readme.md)
 
 
-Installing 'React Native Maps' library:
+Installing libraries:
 
-npm install react-native-maps --save-exact
+'React Native Maps'
+  npm install react-native-maps --save-exact
