@@ -36,10 +36,7 @@ const Report = ({reports,setReports}) => {
              
 
 
- // const [reports, setReports] = useState([]);
-  const latRef = useRef();
-  const lonRef = useRef();
-  //const reporterRef = useRef();
+
   const [errorText, setError] = useState("");
 
   const [EventCategories, setEventCategories] = useState([]);
@@ -50,13 +47,6 @@ const Report = ({reports,setReports}) => {
 
 
   const addReport = async () => {
-   
-    let latText = latRef.current.value;
-    let lat = latText.trim();
-    let lonText = lonRef.current.value;
-    let lon = lonText.trim();
-   // let reporterText = reporterRef.current.value;
-   // let reporter = reporterText.trim();
 
    //if selected item is "seçiniz", user cannot submit report.
    if (!selectedEvent){
@@ -65,16 +55,15 @@ const Report = ({reports,setReports}) => {
 
     const { data: report, error } = await supabase
     .from('TestReports')
-    .insert({ CODE: selectedEvent, LAT: lat, LON: lon})
+    .insert({ CODE: selectedEvent, LAT: geoLoc[1], LON: geoLoc[0]})
     .single();
     if (error) setError(error.message);
     else {
         setReports([report, ...reports]);
         setError(null);
   
-     //   latRef.current.value = "";
-     //   lonRef.current.value = "";
     }
+    setSelectedCategory(null)
     setSelectedEvent(null)
     setModalVisible(!modalVisible)
   };
@@ -170,9 +159,7 @@ useEffect(() => {
                    
                 </Picker>
                
-                <TextInput ref={latRef} placeholder="Lat" style={styles.input}></TextInput>
-                <TextInput ref={lonRef} placeholder="Lon" style={styles.input}></TextInput>
-                <TextInput placeholder="Reporter" style={styles.input}></TextInput>
+                {/* <TextInput placeholder="Reporter" style={styles.input}></TextInput> */}
                 
                 <Button title="submit" onPress={addReport} style={styles.btn} color="#662EDD"></Button>
             </View>
