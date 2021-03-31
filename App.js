@@ -74,7 +74,7 @@ export default function App() {
                 </ScrollView>
 
           </View>  
-          <MapEditor style= {styles.mapEditor} rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></MapEditor>    
+           <MapEditor style= {styles.mapEditor} rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></MapEditor>    
     </View> 
   );
 }

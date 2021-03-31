@@ -41,8 +41,11 @@ const Report = ({reports,setReports}) => {
   //const reporterRef = useRef();
   const [errorText, setError] = useState("");
 
+  const [EventCategories, setEventCategories] = useState([]);
+  const [Events, setEvents] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
   const [selectedEvent, setSelectedEvent] = useState();
-  const eventTypes = {"doğal afetler": "101", "yangın": "102", "sosyal anket":"103"};
+  //const eventTypes = {"doğal afetler": "101", "yangın": "102", "sosyal anket":"103"};
 
 
   const addReport = async () => {
@@ -74,9 +77,39 @@ const Report = ({reports,setReports}) => {
     setSelectedEvent(null)
     setModalVisible(!modalVisible)
   };
-  
-  
 
+
+  useEffect(() => {
+    fetchMainCategories().catch(console.error);
+}, []);
+
+useEffect(() => {
+  fetchEvents().catch(console.error);
+}, []);
+
+  
+  const fetchMainCategories = async () => {
+    
+    let { data: EventCategories, error } = await supabase
+          .from('EventCategories')
+          .select("*")
+          // Filters
+          .eq('ParentCode', '0')
+          if (error) console.log("error", error);
+          else setEventCategories(EventCategories);
+  };
+
+  const fetchEvents = async () => {
+    
+    let { data: Events, error } = await supabase
+          .from('EventCategories')
+          .select("*")
+          // Filters
+          .eq('ParentCode', {selectedCategory})
+          if (error) console.log("error", error);
+          else setEvents(Events);
+  }; 
+ 
     return (
       <View style={styles.container}> 
       <Modal
@@ -103,13 +136,13 @@ const Report = ({reports,setReports}) => {
                 <Text style={styles.header}>Reporter Applet</Text>
                 
                 <Picker style={styles.picker}
-                    selectedValue={selectedEvent}
+                    selectedValue={selectedCategory}
                     onValueChange={(itemValue, itemIndex) =>
-                      setSelectedEvent(itemValue)
+                      setSelectedCategory(itemValue)
                     }>
                       <Picker.Item label="Seçiniz" value="" />  
-                    {Object.entries(eventTypes).map(([key, value]) => (
-                         <Picker.Item label={key} value={value} /> 
+                    {EventCategories.map((EventCategory) => (
+                         <Picker.Item label={EventCategory.Child} value={EventCategory.ChildCode} /> 
                     ))}
                    
                 </Picker>
@@ -118,6 +151,18 @@ const Report = ({reports,setReports}) => {
                     initial={0}
                     onPress={(value) => {this.setState({value:value})}}
                 />
+
+                <Picker style={styles.picker}
+                    selectedValue={selectedEvent}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setSelectedEvent(itemValue)
+                    }>
+                      <Picker.Item label="Seçiniz" value="" />  
+                    {Events.map((Event) => (
+                         <Picker.Item label={Event.Child} value={Event.ChildCode} /> 
+                    ))}
+                   
+                </Picker>
                
                 <TextInput ref={latRef} placeholder="Lat" style={styles.input}></TextInput>
                 <TextInput ref={lonRef} placeholder="Lon" style={styles.input}></TextInput>
