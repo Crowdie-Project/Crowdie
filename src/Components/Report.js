@@ -42,8 +42,8 @@ const Report = ({reports,setReports}) => {
   const [errorText, setError] = useState("");
 
   const [EventCategories, setEventCategories] = useState([]);
-  const [Events, setEvents] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
+  const [Events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState();
   //const eventTypes = {"doğal afetler": "101", "yangın": "102", "sosyal anket":"103"};
 
@@ -79,13 +79,14 @@ const Report = ({reports,setReports}) => {
   };
 
 
-  useEffect(() => {
+useEffect(() => {
     fetchMainCategories().catch(console.error);
-}, []);
+},[]);
 
 useEffect(() => {
-  fetchEvents().catch(console.error);
-}, []);
+    fetchEvents().catch(console.error);
+},[selectedCategory]);
+
 
   
   const fetchMainCategories = async () => {
@@ -105,11 +106,17 @@ useEffect(() => {
           .from('EventCategories')
           .select("*")
           // Filters
-          .eq('ParentCode', {selectedCategory})
+          .eq('ParentCode', selectedCategory)
           if (error) console.log("error", error);
           else setEvents(Events);
   }; 
- 
+  
+ const onPickerValueChange = (itemValue) => {
+  setSelectedCategory(itemValue)
+  fetchEvents().catch(console.error);
+  setEvents(Events)
+ }
+
     return (
       <View style={styles.container}> 
       <Modal
@@ -138,7 +145,7 @@ useEffect(() => {
                 <Picker style={styles.picker}
                     selectedValue={selectedCategory}
                     onValueChange={(itemValue, itemIndex) =>
-                      setSelectedCategory(itemValue)
+                      onPickerValueChange(itemValue)
                     }>
                       <Picker.Item label="Seçiniz" value="" />  
                     {EventCategories.map((EventCategory) => (
