@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text } from 'react-native';
 import Report from './Components/Report';
 import {supabase} from './Components/Supabase.js';
-import MapEditor from './Components/MapEditor';
+//import MapEditor from './Components/MapEditor';
 
 
 //ENVIRONMENT
@@ -74,7 +74,7 @@ export default function App() {
                 </ScrollView>
 
           </View>  
-           <MapEditor style= {styles.mapEditor} rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></MapEditor>    
+           {/* <MapEditor style= {styles.mapEditor} rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></MapEditor>     */}
     </View> 
   );
 }
