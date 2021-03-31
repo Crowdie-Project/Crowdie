@@ -24,9 +24,10 @@ import Navig from "../Nav";
 
 const Report = ({reports,setReports}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedType,setType] = useState(0);
   var radio_props = [
-    {label: 'param1', value: 0 },
-    {label: 'param2', value: 1 }
+    {label: 'sorun', value: 0 },
+    {label: 'çözüm', value: 1 }
   ];
   //Navig instance for geolocation
   const navig = new Navig();
@@ -85,7 +86,7 @@ useEffect(() => {
 
 useEffect(() => {
     fetchEvents().catch(console.error);
-},[selectedCategory]);
+},[selectedCategory,selectedType]);
 
 
   
@@ -107,15 +108,11 @@ useEffect(() => {
           .select("*")
           // Filters
           .eq('ParentCode', selectedCategory)
+          .eq('Type', selectedType)
           if (error) console.log("error", error);
           else setEvents(Events);
   }; 
   
- const onPickerValueChange = (itemValue) => {
-  setSelectedCategory(itemValue)
-  fetchEvents().catch(console.error);
-  setEvents(Events)
- }
 
     return (
       <View style={styles.container}> 
@@ -145,7 +142,7 @@ useEffect(() => {
                 <Picker style={styles.picker}
                     selectedValue={selectedCategory}
                     onValueChange={(itemValue, itemIndex) =>
-                      onPickerValueChange(itemValue)
+                      setSelectedCategory(itemValue)
                     }>
                       <Picker.Item label="Seçiniz" value="" />  
                     {EventCategories.map((EventCategory) => (
@@ -154,9 +151,11 @@ useEffect(() => {
                    
                 </Picker>
                 <RadioForm
+                    style = {styles.radioButtons}
                     radio_props={radio_props}
                     initial={0}
-                    onPress={(value) => {this.setState({value:value})}}
+                    onPress={(value) => {setType(value)}}
+                    formHorizontal={true}
                 />
 
                 <Picker style={styles.picker}
@@ -247,6 +246,10 @@ const styles = StyleSheet.create({
     height: 30,
     paddingHorizontal: 5,
     backgroundColor: '#EDEDED'
+  },
+  radioButtons: {
+    marginBottom: 20,
+    justifyContent: "space-evenly"
   },
   button: {
     padding: 10,
