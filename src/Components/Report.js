@@ -15,8 +15,6 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import {supabase} from './Supabase.js';
 
 //MODULE IMPORTS
-import Navig from "../Nav";
-
 
 //////////////////
 //MAIN
