@@ -126,7 +126,7 @@ useEffect(() => {
       
             <View style={styles.reportWrapper}>
                 
-                <Text style={styles.header}>Reporter Applet</Text>
+                <Text style={styles.header}>Report</Text>
                 
                 <Picker style={styles.picker}
                     selectedValue={selectedCategory}
@@ -141,12 +141,15 @@ useEffect(() => {
                 </Picker>
                 <RadioForm
                     style = {styles.radioButtons}
+                    labelStyle = {styles.radioButtonLabels}
                     radio_props={radio_props}
                     initial={0}
                     onPress={(value) => {setType(value)}}
                     formHorizontal={true}
+                    buttonColor={'#662EDD'}
+                    selectedButtonColor={'#662EDD'}
                 />
-
+                  
                 <Picker style={styles.picker}
                     selectedValue={selectedEvent}
                     onValueChange={(itemValue, itemIndex) =>
@@ -205,17 +208,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(100,100,100,0.75)",
+    width: "100%"
   },
   reportWrapper: {
-    padding: 50
+    paddingHorizontal: 50,
+    paddingBottom: 50
   },
   scrollview: {
     height: 250
   },
   header: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 20,
+    textAlign: "center"
   },
   reports: {
     fontSize: 14
@@ -236,7 +242,12 @@ const styles = StyleSheet.create({
   },
   radioButtons: {
     marginBottom: 20,
-    justifyContent: "space-evenly"
+    marginHorizontal: 20
+  },
+  radioButtonLabels: {
+    marginRight: 20,
+    height: "100%",
+    marginVertical: "auto"
   },
   button: {
     padding: 10,
