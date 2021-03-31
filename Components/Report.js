@@ -101,6 +101,12 @@ useEffect(() => {
           if (error) console.log("error", error);
           else setEvents(Events);
   }; 
+
+  const closeReport = () => {
+    setSelectedCategory(null)
+    setSelectedEvent(null)
+    setModalVisible(!modalVisible)
+  }
   
 
     return (
@@ -119,7 +125,7 @@ useEffect(() => {
     
         <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
+              onPress={() => closeReport()}>
               <Text style={styles.closeButtonText}>X</Text>
               
          </Pressable> 
