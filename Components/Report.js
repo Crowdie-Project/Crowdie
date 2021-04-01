@@ -192,6 +192,10 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
+    position: "absolute",
+    zIndex: 99999,
+    left: 15,
+    top: 100
   },
   modalContainer:{
     flexDirection: "column",
