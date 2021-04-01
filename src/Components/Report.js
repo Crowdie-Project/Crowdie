@@ -32,8 +32,8 @@ const Report = ({reports,setReports}) => {
 //Navig instance for geolocation
 const navig = new Navig();
 //Geolocation array => [longitude, latitude, timestamp]
-const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button
-           
+//local timestamp is ignored in favor of serverside timestamp
+const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button           
 
 
   const [errorText, setError] = useState("");
@@ -49,6 +49,11 @@ const geoLoc = navig.getLocation();                                        //Loc
 
    //if selected item is "seçiniz", user cannot submit report.
    if (!selectedEvent){
+     return;
+   }
+
+   if (geoLoc[0]==-999){
+     alert('ERROR: Unable to submit report, location access is off! To submit reports, please enable location access on your device.');
      return;
    }
 
