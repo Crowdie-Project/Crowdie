@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   modalContainer:{
     flexDirection: "column",
     backgroundColor: "#DEDEDE",
-    width: "fit-content",
+    width: 400,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -261,7 +261,6 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    width: "fit-content",
     elevation: 2
   },
   buttonOpen: {
