@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState} from 'react';
 import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, TouchableNativeFeedback, Dimensions} from 'react-native';
 import MapView from 'react-native-maps';
-import Navig from "../Nav";
+import Navig from "./Nav";
 
 //Navig instance for geolocation
 const navig = new Navig();
