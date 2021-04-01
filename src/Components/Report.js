@@ -15,7 +15,7 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import {supabase} from './Supabase.js';
 
 //MODULE IMPORTS
-
+import Navig from "../Nav";
 
 //////////////////
 //MAIN
@@ -29,7 +29,11 @@ const Report = ({reports,setReports}) => {
     {label: 'çözüm', value: 1 }
   ];
   
-
+//Navig instance for geolocation
+const navig = new Navig();
+//Geolocation array => [longitude, latitude, timestamp]
+const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button
+           
 
 
   const [errorText, setError] = useState("");
