@@ -135,7 +135,7 @@ class PlanarLaplace extends Component {
 
 	// http://www.movable-type.co.uk/scripts/latlong.html
 	addVectorToPos(pos,distance,angle){
-		var ang_distance = distance / PlanarLaplace.earth_radius;
+		var ang_distance = distance / this.earth_radius;
 		var lat1 = this.rad_of_deg(pos.latitude);
 		var lon1 = this.rad_of_deg(pos.longitude);
 
@@ -149,6 +149,7 @@ class PlanarLaplace extends Component {
 						Math.cos(ang_distance) - Math.sin(lat1) * Math.sin(lat2)
 					);
 		lon2 = (lon2 + 3 * Math.PI) % (2 * Math.PI) - Math.PI;		// normalise to -180..+180
+
 		return { 
 			latitude: this.deg_of_rad(lat2),
 			longitude: this.deg_of_rad(lon2)
