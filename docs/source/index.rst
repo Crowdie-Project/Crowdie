@@ -10,6 +10,7 @@ Welcome to CrowdChain's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   codes/codes
 
 
 Indices and tables
