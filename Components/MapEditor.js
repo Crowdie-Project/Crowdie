@@ -2,9 +2,14 @@
 import React, { useEffect, useRef, useState} from 'react';
 import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, TouchableNativeFeedback, Dimensions} from 'react-native';
 import MapView from 'react-native-maps';
+import Navig from "../Nav";
 
+//Navig instance for geolocation
+const navig = new Navig();
+//Geolocation array => [longitude, latitude, timestamp]
+const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button
+           
 const MapEditor = () => {
-const position = [41.191557499999995, 29.0488561]
         
 return (
   
@@ -12,8 +17,8 @@ return (
     style = {styles.mapEditor}
     loadingEnabled = {true}
     region={{
-      latitude: 37.78825,
-      longitude: -122.4324,
+      latitude: geoLoc[1],
+      longitude: geoLoc[0],
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     }}
