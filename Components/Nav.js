@@ -6,7 +6,7 @@ class Navig extends Component {
 
   constructor() {
     super();
-    this.locArr = [-1, -1, -1];
+    this.locArr = [-999, -999, -1];
   }
   //need to check it again before submitting report to ensure user is where they tell they are
   getLocation() {
