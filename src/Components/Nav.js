@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import PlanarLaplace from "./PlanarLaplace";
 
 class Navig extends Component {
 
@@ -16,6 +17,10 @@ class Navig extends Component {
       this.locArr[1] = position.coords.latitude;
       this.locArr[2] = position.timestamp;
       //console.log("Whole geolocation data:", position);
+
+      //APPLY PERTURBATION HERE
+      //console.log("APPLY PERTURBATION HERE:");
+
       this.showLocs();  
     });
     return this.locArr;
