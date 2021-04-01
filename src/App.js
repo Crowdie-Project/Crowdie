@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text } from 'react-native';
 import Report from './Components/Report';
 import {supabase} from './Components/Supabase.js';
-//import MapEditor from './Components/MapEditor';
+import MapEditor from './Components/MapEditor';
 
 
 //ENVIRONMENT
@@ -74,7 +74,7 @@ export default function App() {
                 </ScrollView>
 
           </View>  
-           {/* <MapEditor style= {styles.mapEditor} rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></MapEditor>     */}
+        <MapEditor/>    
     </View> 
   );
 }
@@ -88,7 +88,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   reportWrapper: {
-    padding: 20
+    backgroundColor: '#D1D1D1',
+    padding: 20,
+    position: "absolute",
+    zIndex: 9999,
+    left: 15
   },
   scrollview: {
     height: 250
