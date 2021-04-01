@@ -13,13 +13,22 @@ class Navig extends Component {
   getLocation() {
     navigator.geolocation.getCurrentPosition(
       position => {
-      this.locArr[0] = position.coords.longitude;
-      this.locArr[1] = position.coords.latitude;
+      //this.locArr[0] = position.coords.longitude;
+      //this.locArr[1] = position.coords.latitude;
       this.locArr[2] = position.timestamp;
       //console.log("Whole geolocation data:", position);
 
       //APPLY PERTURBATION HERE
-      //console.log("APPLY PERTURBATION HERE:");
+      //console.log("APPLYING PERTURBATION HERE:");
+      console.log("TODO: MODIFY EPS");
+
+      //var epsilon = st.epsilon / st.levels[level].radius;
+      var epsilon = 1.0;
+      var pl = new PlanarLaplace();
+      var noisy = pl.addNoise(epsilon, position.coords);
+
+      this.locArr[0] = noisy.longitude;
+      this.locArr[1] = noisy.latitude;
 
       this.showLocs();  
     });
