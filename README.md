@@ -1,7 +1,9 @@
 # CrowdChain
 
 <p align="center">
-  [![Documentation](https://img.shields.io/readthedocs/crowdchain)](https://crowdchain.readthedocs.io/)
+  <a href="https://crowdchain.readthedocs.io/">
+         <img alt="Documentation" src="https://img.shields.io/readthedocs/crowdchain">
+  </a>
 </p>
 
 Todo: Add info
