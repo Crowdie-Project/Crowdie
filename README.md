@@ -1,5 +1,8 @@
 # CrowdChain
 
+[![Documentation](https://img.shields.io/readthedocs/crowdchain)](https://crowdchain.readthedocs.io/)
+
+Todo: Add info
 
 ## Installing libraries:
 
