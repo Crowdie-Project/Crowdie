@@ -1,6 +1,8 @@
 # CrowdChain
 
-[![Documentation](https://img.shields.io/readthedocs/crowdchain)](https://crowdchain.readthedocs.io/)
+<p align="center">
+  [![Documentation](https://img.shields.io/readthedocs/crowdchain)](https://crowdchain.readthedocs.io/)
+</p>
 
 Todo: Add info
 
