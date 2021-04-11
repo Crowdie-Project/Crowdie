@@ -74,7 +74,7 @@ export default function App() {
                 </ScrollView>
 
           </View>  
-        <MapEditor/>    
+        <MapEditor points={reports}/>    
     </View> 
   );
 }
