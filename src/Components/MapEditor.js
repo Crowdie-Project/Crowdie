@@ -3,13 +3,13 @@ import React, { useEffect, useRef, useState} from 'react';
 import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, TouchableNativeFeedback, Dimensions} from 'react-native';
 import MapView from 'react-native-maps';
 import Navig from "./Nav";
-
+import { Marker } from 'react-native-maps';
 //Navig instance for geolocation
 const navig = new Navig();
 //Geolocation array => [longitude, latitude, timestamp]
 const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button
            
-const MapEditor = () => {
+const MapEditor = ({points}) => {
         
 return (
   
@@ -22,7 +22,16 @@ return (
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     }}
-  />
+  >
+     {points.map((point) => (
+    <Marker
+      key={point.id}
+      coordinate={[point.LAT,point.LON]}
+      title={point.CODE}
+      description={point.CODE}
+    />
+  ))}
+  </MapView>
 
 );
 };
