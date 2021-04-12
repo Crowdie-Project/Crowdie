@@ -1,9 +1,9 @@
 //REACT IMPORTS
 import React, { useEffect, useRef, useState} from 'react';
 import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, TouchableNativeFeedback, Dimensions} from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker, Callout}from 'react-native-maps';
 import Navig from "./Nav";
-import { Marker } from 'react-native-maps';
+import MarkerDescription from "./MarkerDescription";
 //Navig instance for geolocation
 const navig = new Navig();
 //Geolocation array => [longitude, latitude, timestamp]
@@ -27,9 +27,11 @@ return (
     <Marker
       key={point.id}
       coordinate={[point.LAT,point.LON]}
-      title={point.CODE}
-      description={point.CODE}
-    />
+    >      
+      <Callout tooltip>
+        <MarkerDescription report={point}/>
+      </Callout>
+    </Marker>
   ))}
   </MapView>
 
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
     position: "relative"
-  }
+  },
 });
 
 export default MapEditor;
