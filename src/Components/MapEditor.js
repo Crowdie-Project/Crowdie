@@ -1,6 +1,6 @@
 //REACT IMPORTS
 import React, { useEffect, useRef, useState} from 'react';
-import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, TouchableNativeFeedback, Dimensions} from 'react-native';
+import {View, Text,TextInput, Button, StyleSheet,FlatList, requireNativeComponent, TouchableNativeFeedback, Dimensions} from 'react-native';
 import MapView, { Marker, Callout}from 'react-native-maps';
 import Navig from "./Nav";
 import MarkerDescription from "./MarkerDescription";
@@ -9,7 +9,7 @@ const navig = new Navig();
 //Geolocation array => [longitude, latitude, timestamp]
 const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button
            
-const MapEditor = ({points}) => {
+const MapEditor = ({points,colors}) => {
         
 return (
   
@@ -28,6 +28,7 @@ return (
       key={point.id}
       coordinate={[point.LAT,point.LON]}
       description={<MarkerDescription report={point}/>}
+      pinColor={colors.filter(color => color.CategoryCode == point.CategoryCode).map(color => color.HexCode)}
     />     
     
   ))}
