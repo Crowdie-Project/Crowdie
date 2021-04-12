@@ -18,6 +18,8 @@ import MapEditor from './Components/MapEditor';
 
 export default function App() {
   const [reports, setReports] = useState([]);
+  const [EventCategories, setEventCategories] = useState([]);
+
   useEffect(() => {
   
     // let url = window.location.hash;
@@ -45,6 +47,22 @@ export default function App() {
     else setReports(reports);
 };
 
+
+useEffect(() => {
+  fetchMainCategories().catch(console.error);
+},[]);
+
+const fetchMainCategories = async () => {
+    
+  let { data: EventCategories, error } = await supabase
+        .from('EventCategories')
+        .select("*")
+        // Filters
+        .eq('ParentCode', '0')
+        if (error) console.log("error", error);
+        else setEventCategories(EventCategories);
+};
+
   return (
 
 
@@ -52,6 +70,8 @@ export default function App() {
       <Report
            reports={reports}
            setReports={setReports}
+           EventCategories={EventCategories}
+           setEventCategories={setEventCategories}
          />
        <View style={styles.reportWrapper}>
                  <Text style={styles.header}>Reported Events</Text>
@@ -74,7 +94,8 @@ export default function App() {
                 </ScrollView>
 
           </View>  
-        <MapEditor points={reports}/>    
+        <MapEditor points={reports}/>   
+        
     </View> 
   );
 }

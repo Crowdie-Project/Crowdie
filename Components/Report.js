@@ -21,7 +21,7 @@ import Navig from "./Nav";
 //MAIN
 //////////////////
 
-const Report = ({reports,setReports}) => {
+const Report = ({reports,setReports,EventCategories,setEventCategories}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedType,setType] = useState(0);
   var radio_props = [
@@ -38,7 +38,7 @@ const geoLoc = navig.getLocation();                                        //Loc
 
   const [errorText, setError] = useState("");
 
-  const [EventCategories, setEventCategories] = useState([]);
+
   const [selectedCategory, setSelectedCategory] = useState();
   const [Events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState();
@@ -74,25 +74,9 @@ const geoLoc = navig.getLocation();                                        //Loc
 
 
 useEffect(() => {
-    fetchMainCategories().catch(console.error);
-},[]);
-
-useEffect(() => {
     fetchEvents().catch(console.error);
 },[selectedCategory,selectedType]);
 
-
-  
-  const fetchMainCategories = async () => {
-    
-    let { data: EventCategories, error } = await supabase
-          .from('EventCategories')
-          .select("*")
-          // Filters
-          .eq('ParentCode', '0')
-          if (error) console.log("error", error);
-          else setEventCategories(EventCategories);
-  };
 
   const fetchEvents = async () => {
     
