@@ -19,6 +19,7 @@ import MapEditor from './Components/MapEditor';
 export default function App() {
   const [reports, setReports] = useState([]);
   const [EventCategories, setEventCategories] = useState([]);
+  const [Colors, setColors] = useState([]);
 
   useEffect(() => {
   
@@ -63,6 +64,19 @@ const fetchMainCategories = async () => {
         else setEventCategories(EventCategories);
 };
 
+useEffect(() => {
+  fetchCategoryColors().catch(console.error);
+},[]);
+
+const fetchCategoryColors = async () => {
+    
+  let { data: Colors, error } = await supabase
+        .from('ColorCodes')
+        .select("*")
+        if (error) console.log("error", error);
+        else setColors(Colors);
+};
+
   return (
 
 
@@ -94,7 +108,7 @@ const fetchMainCategories = async () => {
                 </ScrollView>
 
           </View>  
-        <MapEditor points={reports}/>   
+        <MapEditor points={reports} colors={Colors}/>   
         
     </View> 
   );

@@ -59,7 +59,7 @@ const geoLoc = navig.getLocation();                                        //Loc
 
     const { data: report, error } = await supabase
     .from('TestReports')
-    .insert({ CODE: selectedEvent, LAT: geoLoc[1], LON: geoLoc[0]})
+    .insert({ CODE: selectedEvent, LAT: geoLoc[1], LON: geoLoc[0], CategoryCode: selectedCategory})
     .single();
     if (error) setError(error.message);
     else {
