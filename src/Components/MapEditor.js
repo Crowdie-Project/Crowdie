@@ -27,11 +27,9 @@ return (
     <Marker
       key={point.id}
       coordinate={[point.LAT,point.LON]}
-    >      
-      <Callout tooltip>
-        <MarkerDescription report={point}/>
-      </Callout>
-    </Marker>
+      description={<MarkerDescription report={point}/>}
+    />     
+    
   ))}
   </MapView>
 

@@ -6,36 +6,37 @@ import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, Toucha
 const MarkerDescription = ({report}) => {
         
 return (
-<View>    
-    <View style = {bubble}>
-        <Text style = {title}>
+  
+    <View style = {styles.bubble}>
+       <View style ={styles.row}> 
+       <Text style = {styles.title}>
             Report Sheet
         </Text>
+       </View>
+       <View style ={styles.row}> 
         <Text>
             Report Code: {report.CODE}
             Report Coordinates: {report.LAT} , {report.LONG}
         </Text>
+        </View>
     </View>
-    <View style = {arrowBorder}/>
-    <View style = {arrow}/>
-</View>
+
 );
 };
 
 const styles = StyleSheet.create({
  bubble: {
-     flexDirection: 'row',
-     alignSelf: 'flex-start',
      backgroundColor: '#fff',
-     borderRadius: 6,
-     borderColor: '#ccc',
-     borderWidth: 0.5,
-     padding: 15,
-     width: 150,
+     padding: 10,
+     width: "auto"
+ },
+ row: {
+     flex: 1,
  },
  title: {
     fontSize: 16,
     marginBottom: 5,
+    flex: 1
  },
  arrow: {
      backgroundColor: 'transparent',
