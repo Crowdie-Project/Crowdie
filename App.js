@@ -132,18 +132,6 @@ const filterSelected = (newFilter) => {
          </Pressable>
          ))}
                
-{/*             
-                <RadioForm
-                    style = {styles.radioButtons}
-                    labelStyle = {styles.radioButtonLabels}
-                    radio_props={Colors.map((color) => ( {label: "", value: color.CategoryCode }))}
-                    initial={0}
-                    onPress={(value) => {setFilter(value)}}
-                    formHorizontal={false}
-                    buttonColor={"#000"}
-                    selectedButtonColor={"#000"}
-                />
-   */}
         </View>
     </View> 
   );
@@ -158,11 +146,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   reportWrapper: {
-    backgroundColor: '#D1D1D1',
-    padding: 20,
+    backgroundColor: '#fff',
+    padding: 15,
     position: "absolute",
     zIndex: 9999,
-    left: 15
+    left: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10
   },
   filterContainer: {
     padding: 10,
@@ -171,12 +166,13 @@ const styles = StyleSheet.create({
     right: 10
   },
   scrollview: {
-    height: 250
+    height: 150,
+    padding: 5
   },
   header: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 10
   },
   reports: {
     fontSize: 14
