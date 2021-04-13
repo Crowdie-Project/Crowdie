@@ -16,7 +16,7 @@ return (
        <View style ={styles.row}> 
         <Text>
             Report Code: {report.CODE}
-            Report Coordinates: {report.LAT} , {report.LONG}
+            Report Coordinates: {report.LAT} , {report.LON}
         </Text>
         </View>
     </View>
@@ -27,8 +27,8 @@ return (
 const styles = StyleSheet.create({
  bubble: {
      backgroundColor: '#fff',
-     padding: 10,
-     width: "auto"
+     padding: 5,
+     width: 200
  },
  row: {
      flex: 1,

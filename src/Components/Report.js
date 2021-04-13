@@ -16,6 +16,7 @@ import {supabase} from './Supabase.js';
 
 //MODULE IMPORTS
 import Navig from "./Nav";
+import { Icon } from 'leaflet';
 
 //////////////////
 //MAIN
@@ -182,8 +183,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     zIndex: 99999,
-    left: 15,
-    top: 100
+    bottom: 20,
+    flex: 1
   },
   modalContainer:{
     flexDirection: "column",
@@ -252,7 +253,19 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   buttonOpen: {
-    backgroundColor: "#616161",
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 50,
+    width: 100,
+    height: 100,
+    justifyContent: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10
   },
   buttonClose: {
     alignSelf: "flex-end",
@@ -263,9 +276,10 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   textStyle: {
-    color: "white",
+    color: "#000",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: 18
   },
   modalText: {
     marginBottom: 15,
