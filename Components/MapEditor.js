@@ -9,7 +9,7 @@ const navig = new Navig();
 //Geolocation array => [longitude, latitude, timestamp]
 const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button
            
-const MapEditor = ({points,colors}) => {
+const MapEditor = ({points,colors,filter}) => {
         
 return (
   
