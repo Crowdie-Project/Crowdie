@@ -2,10 +2,11 @@
 
 //IMPORTS
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, View,ScrollView,Text } from 'react-native';
+import { StyleSheet, View,ScrollView,Text,Pressable } from 'react-native';
 import Report from './Components/Report';
 import {supabase} from './Components/Supabase.js';
 import MapEditor from './Components/MapEditor';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 
 //ENVIRONMENT
@@ -20,6 +21,7 @@ export default function App() {
   const [reports, setReports] = useState([]);
   const [EventCategories, setEventCategories] = useState([]);
   const [Colors, setColors] = useState([]);
+  const [selectedFilter, setFilter] = useState([]);
 
   useEffect(() => {
   
@@ -37,12 +39,13 @@ export default function App() {
     // }
 
     fetchReports().catch(console.error);
-}, []);
+}, [selectedFilter]);
 
   const fetchReports = async () => {
     let { data: reports, error } = await supabase
         .from("TestReports")
         .select("*")
+        .in('CategoryCode', selectedFilter)
         .order("id", { ascending: false });
     if (error) console.log("error", error);
     else setReports(reports);
@@ -75,7 +78,17 @@ const fetchCategoryColors = async () => {
         .select("*")
         if (error) console.log("error", error);
         else setColors(Colors);
+      let defaultFilter = Colors.map((color) => color.CategoryCode)  
+      setFilter(defaultFilter)
 };
+
+const filterSelected = (newFilter) => {
+  if (selectedFilter == newFilter){
+    setFilter(Colors.map((color) => color.CategoryCode))
+  }else{
+    setFilter([newFilter])
+  }
+}
 
   return (
 
@@ -108,8 +121,30 @@ const fetchCategoryColors = async () => {
                 </ScrollView>
 
           </View>  
-        <MapEditor points={reports} colors={Colors}/>   
-        
+        <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
+        <View style={styles.filterContainer}>
+         {Colors.map((color) => (
+           <Pressable
+           style={[styles.button,{backgroundColor:color.HexCode}]}
+           onPress={() => filterSelected(color.CategoryCode)}
+         >
+           <Text style={styles.textStyle}>{color.CategoryCode}</Text>
+         </Pressable>
+         ))}
+               
+{/*             
+                <RadioForm
+                    style = {styles.radioButtons}
+                    labelStyle = {styles.radioButtonLabels}
+                    radio_props={Colors.map((color) => ( {label: "", value: color.CategoryCode }))}
+                    initial={0}
+                    onPress={(value) => {setFilter(value)}}
+                    formHorizontal={false}
+                    buttonColor={"#000"}
+                    selectedButtonColor={"#000"}
+                />
+   */}
+        </View>
     </View> 
   );
 }
@@ -129,6 +164,12 @@ const styles = StyleSheet.create({
     zIndex: 9999,
     left: 15
   },
+  filterContainer: {
+    padding: 10,
+    position: "absolute",
+    zIndex: 9999,
+    right: 10
+  },
   scrollview: {
     height: 250
   },
@@ -143,5 +184,16 @@ const styles = StyleSheet.create({
   mapEditor: {
     height: 180,
     width: 180,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  button: {
+    padding: 10,
+    elevation: 2,
+    marginVertical: 5,
+    borderRadius: 20
   }
 });
