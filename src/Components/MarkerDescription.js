@@ -14,10 +14,9 @@ return (
         </Text>
        </View>
        <View style ={styles.row}> 
-        <Text>
-            Report Code: {report.CODE}
-            Report Coordinates: {report.LAT} , {report.LON}
-        </Text>
+        <Text>Category: {report.CategoryCode}</Text>
+        <Text>Code: {report.CODE}</Text>
+        <Text>Coordinates: {report.LAT} , {report.LON}</Text>    
         </View>
     </View>
 
@@ -35,6 +34,8 @@ const styles = StyleSheet.create({
  },
  title: {
     fontSize: 16,
+    color: '#84131f',
+    fontWeight: 'bold',
     marginBottom: 5,
     flex: 1
  },
