@@ -59,14 +59,15 @@ const Login = () => {
                 Login
             </Text>
           <View>
-          <Text>*Email:</Text>
+          <Text style={styles.textStyle}>*Email:</Text>
           <TextInput
            onChangeText={text => setEmail(text)}
           style={styles.input}/>
           </View>
            <View>
-           <Text>*Password:</Text>
+           <Text style={styles.textStyle}>*Password:</Text>
             <TextInput
+            secureTextEntry={true}
             onChangeText={text => setPassword(text)}
              style={styles.input}
                 />
@@ -84,14 +85,14 @@ const Login = () => {
                         onPress={() =>
                             handleLogin("REGISTER").catch(console.error)
                         }>
-                    <Text>Sign Up</Text>
+                    <Text style={styles.buttonText}>Sign Up</Text>
                     </Pressable>
                 
                     <Pressable
                      style={styles.button}
                      onPress={() =>handleLogin("LOGIN")}
                     >
-                        <Text>Sign In</Text>
+                        <Text style={styles.buttonText}>Sign In</Text>
                     </Pressable>
              
             </View>
@@ -147,17 +148,21 @@ const styles = StyleSheet.create({
     button: {
       padding: 5,
       elevation: 2,
-      backgroundColor: "#fff",
+      backgroundColor: "#008000",
       textAlign: 'center',
       marginVertical: 10,
+      width: 100
     },
    
     textStyle: {
       color: "#000",
       fontWeight: "bold",
-      textAlign: "center",
-      fontSize: 18
+      fontSize: 16
     },
+    buttonText: {
+        color: "#fff",
+        fontSize: 16
+    }
   
     });
 
