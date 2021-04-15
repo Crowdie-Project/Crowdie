@@ -43,6 +43,7 @@ const geoLoc = navig.getLocation();                                        //Loc
   const [selectedCategory, setSelectedCategory] = useState();
   const [Events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState();
+  const [waiting, setWaiting] = useState();
   //const eventTypes = {"doğal afetler": "101", "yangın": "102", "sosyal anket":"103"};
 
 
@@ -50,7 +51,12 @@ const geoLoc = navig.getLocation();                                        //Loc
 
    //if selected item is "seçiniz", user cannot submit report.
    if (!selectedEvent){
-     alert('ERROR: No report specified.')
+     alert('ERROR: No report specified.');
+     return;
+   }
+
+   if (waiting){
+     alert("Hold up! You just submitted a report a few minutes ago. News isn't that fast!");
      return;
    }
 
@@ -71,8 +77,10 @@ const geoLoc = navig.getLocation();                                        //Loc
         setError(null);
   
     }
+
     setSelectedCategory(null)
     setSelectedEvent(null)
+    setWaiting(true)
     setModalVisible(!modalVisible)
   };
 
