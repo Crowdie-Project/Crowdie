@@ -4,13 +4,11 @@ import {supabase} from './Supabase.js';
 
 const Login = () => {
     const [helperText, setHelperText] = useState({ error: null, text: null });
-    const emailRef = useRef();
-    const passwordRef = useRef();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleLogin = async (type) => {
-        const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-
+   
         const { user, error } =
             type === "LOGIN"
                 ? await supabase.auth.signIn({ email, password })
@@ -61,20 +59,18 @@ const Login = () => {
                 Login
             </Text>
           <View>
-          <Text>*Email:</Text>
+          <Text style={styles.textStyle}>*Email:</Text>
           <TextInput
-          style={styles.input}
-                type={"email"}
-                ref={emailRef}
-      ></TextInput>
+           onChangeText={text => setEmail(text)}
+          style={styles.input}/>
           </View>
            <View>
-           <Text>*Password:</Text>
+           <Text style={styles.textStyle}>*Password:</Text>
             <TextInput
+            secureTextEntry={true}
+            onChangeText={text => setPassword(text)}
              style={styles.input}
-                type={"password"}
-                ref={passwordRef}
-        ></TextInput>
+                />
            </View>
          
             {!!helperText.text && (
@@ -89,14 +85,14 @@ const Login = () => {
                         onPress={() =>
                             handleLogin("REGISTER").catch(console.error)
                         }>
-                        Sign Up
+                    <Text style={styles.buttonText}>Sign Up</Text>
                     </Pressable>
                 
                     <Pressable
                      style={styles.button}
-                     onPress={() => handleLogin("LOGIN")}
-                        type="button">
-                        Sign In
+                     onPress={() =>handleLogin("LOGIN")}
+                    >
+                        <Text style={styles.buttonText}>Sign In</Text>
                     </Pressable>
              
             </View>
@@ -152,17 +148,21 @@ const styles = StyleSheet.create({
     button: {
       padding: 5,
       elevation: 2,
-      backgroundColor: "#fff",
+      backgroundColor: "#008000",
       textAlign: 'center',
-      marginVertical: 10
+      marginVertical: 10,
+      width: 100
     },
    
     textStyle: {
       color: "#000",
       fontWeight: "bold",
-      textAlign: "center",
-      fontSize: 18
+      fontSize: 16
     },
+    buttonText: {
+        color: "#fff",
+        fontSize: 16
+    }
   
     });
 
