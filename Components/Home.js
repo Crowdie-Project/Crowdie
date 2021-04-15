@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
       borderRadius: 20
     },
     LogoutText: {
-        color: "#000",
+        color: "#fff",
         fontWeight: "bold",
         textAlign: "center",
         fontSize: 18
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
         bottom: 20
       },
     buttonLogout: {
-        backgroundColor: "#fff",
+        backgroundColor: "#000",
         padding: 10,
         justifyContent: 'center',
         shadowColor: "#000",
