@@ -125,6 +125,9 @@ const Home = ({user}) => {
            <Text style={styles.textStyle}>{color.CategoryCode}</Text>
          </Pressable>
          ))}
+       
+        </View>
+        <View style={styles.logoutContainer}>
         <Pressable 
                style={styles.buttonLogout}
                onPress={handleLogout}>
@@ -195,6 +198,13 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         fontSize: 18
+      },
+      logoutContainer: {
+        padding: 10,
+        position: "absolute",
+        zIndex: 9999,
+        right: 10,
+        bottom: 20
       },
     buttonLogout: {
         backgroundColor: "#fff",
