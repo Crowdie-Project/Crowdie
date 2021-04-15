@@ -152,7 +152,14 @@ return (
             Code: 
             <Text style = {styles.descr}>{reportCode}</Text>
         </Text>
-        <Text>Coordinates: {report.LAT} , {report.LON}</Text>    
+        <Text style ={styles.subTitle}>
+            Coordinates: 
+            <Text style = {styles.descr}>{report.LAT} , {report.LON}</Text>
+        </Text>
+        <Text style ={styles.subTitle}>
+            Time: 
+            <Text style = {styles.descr}>{report.TIME}</Text>
+        </Text>    
         </View>
     </View>
 
