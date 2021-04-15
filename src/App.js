@@ -3,137 +3,37 @@
 //IMPORTS
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text,Pressable } from 'react-native';
-import Report from './Components/Report';
 import {supabase} from './Components/Supabase.js';
-import MapEditor from './Components/MapEditor';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import Home from './Components/Home';
+import Login from './Components/Login';
 
-
-//ENVIRONMENT
-//import env from './config/env';
-//console.log(env);
-//console.log("__DEV__ ?",__DEV__);
-//env contains env.SUPABASE_URL, env.SUPABASE_KEY
 
 //MAIN
 
 export default function App() {
-  const [reports, setReports] = useState([]);
-  const [EventCategories, setEventCategories] = useState([]);
-  const [Colors, setColors] = useState([]);
-  const [selectedFilter, setFilter] = useState([]);
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-  
-    // let url = window.location.hash;
-    // let query = url.substr(1);
-    // let result = {};
+    useEffect(() => {
+        const session = supabase.auth.session();
+        setUser(session?.user ?? null);
 
-    // query.split("&").forEach((part) => {
-    //     const item = part.split("=");
-    //     result[item[0]] = decodeURIComponent(item[1]);
-    // });
+        const { data: authListener } = supabase.auth.onAuthStateChange(
+            async (event, session) => {
+                const currentUser = session?.user;
+                setUser(currentUser ?? null);
+            }
+        );
 
-    // if (result.type === "recovery") {
-    //     setRecoveryToken(result.access_token);
-    // }
-
-    fetchReports().catch(console.error);
-}, [selectedFilter]);
-
-  const fetchReports = async () => {
-    let { data: reports, error } = await supabase
-        .from("TestReports")
-        .select("*")
-        .in('CategoryCode', selectedFilter)
-        .order("id", { ascending: false });
-    if (error) console.log("error", error);
-    else setReports(reports);
-};
-
-
-useEffect(() => {
-  fetchMainCategories().catch(console.error);
-},[]);
-
-const fetchMainCategories = async () => {
-    
-  let { data: EventCategories, error } = await supabase
-        .from('EventCategories')
-        .select("*")
-        // Filters
-        .eq('ParentCode', '0')
-        if (error) console.log("error", error);
-        else setEventCategories(EventCategories);
-};
-
-useEffect(() => {
-  fetchCategoryColors().catch(console.error);
-},[]);
-
-const fetchCategoryColors = async () => {
-    
-  let { data: Colors, error } = await supabase
-        .from('ColorCodes')
-        .select("*")
-        if (error) console.log("error", error);
-        else setColors(Colors);
-      let defaultFilter = Colors.map((color) => color.CategoryCode)  
-      setFilter(defaultFilter)
-};
-
-const filterSelected = (newFilter) => {
-  if (selectedFilter == newFilter){
-    setFilter(Colors.map((color) => color.CategoryCode))
-  }else{
-    setFilter([newFilter])
-  }
-}
+        return () => {
+            authListener?.unsubscribe();
+        };
+    }, [user]);
 
   return (
+      <View style={styles.container}>
+         {!user ? <Login /> : <Home user={user} />}
+      </View>
 
-
-    <View style={styles.container}>
-      <Report
-           reports={reports}
-           setReports={setReports}
-           EventCategories={EventCategories}
-           setEventCategories={setEventCategories}
-         />
-       <View style={styles.reportWrapper}>
-                 <Text style={styles.header}>Reported Events</Text>
-                   <ScrollView style={styles.scrollview}>
-               
-                    
-                    {reports.length ? (
-                        reports.map((report) => (
-                            <Text key={report.id} style={styles.reports}>
-                              code: {report.CODE} lat: {report.LAT} lon: {report.LON}
-                            </Text>
-                        ))
-                    ) : (
-                        <Text style={styles.reports}>
-                            You do have any reported events yet!
-                        </Text>
-                    )}
-                
-
-                </ScrollView>
-
-          </View>  
-        <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
-        <View style={styles.filterContainer}>
-         {Colors.map((color) => (
-           <Pressable
-           style={[styles.button,{backgroundColor:color.HexCode}]}
-           onPress={() => filterSelected(color.CategoryCode)}
-         >
-           <Text style={styles.textStyle}>{color.CategoryCode}</Text>
-         </Pressable>
-         ))}
-               
-        </View>
-    </View> 
   );
 }
 
