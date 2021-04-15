@@ -4,13 +4,11 @@ import {supabase} from './Supabase.js';
 
 const Login = () => {
     const [helperText, setHelperText] = useState({ error: null, text: null });
-    const emailRef = useRef();
-    const passwordRef = useRef();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleLogin = async (type) => {
-        const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-
+   
         const { user, error } =
             type === "LOGIN"
                 ? await supabase.auth.signIn({ email, password })
@@ -63,18 +61,15 @@ const Login = () => {
           <View>
           <Text>*Email:</Text>
           <TextInput
-          style={styles.input}
-                type={"email"}
-                ref={emailRef}
-      ></TextInput>
+           onChangeText={text => setEmail(text)}
+          style={styles.input}/>
           </View>
            <View>
            <Text>*Password:</Text>
             <TextInput
+            onChangeText={text => setPassword(text)}
              style={styles.input}
-                type={"password"}
-                ref={passwordRef}
-        ></TextInput>
+                />
            </View>
          
             {!!helperText.text && (
@@ -89,14 +84,14 @@ const Login = () => {
                         onPress={() =>
                             handleLogin("REGISTER").catch(console.error)
                         }>
-                        Sign Up
+                    <Text>Sign Up</Text>
                     </Pressable>
                 
                     <Pressable
                      style={styles.button}
-                     onPress={() => handleLogin("LOGIN")}
-                        type="button">
-                        Sign In
+                     onPress={() =>handleLogin("LOGIN")}
+                    >
+                        <Text>Sign In</Text>
                     </Pressable>
              
             </View>
@@ -154,7 +149,7 @@ const styles = StyleSheet.create({
       elevation: 2,
       backgroundColor: "#fff",
       textAlign: 'center',
-      marginVertical: 10
+      marginVertical: 10,
     },
    
     textStyle: {
