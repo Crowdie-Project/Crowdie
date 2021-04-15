@@ -100,7 +100,7 @@ const Login = () => {
                     </Pressable>
              
             </View>
-            <View>
+            {/* <View>
              <Text>Or continue with</Text>
           
 
@@ -122,7 +122,7 @@ const Login = () => {
                             </Pressable>
                      
                 </View>
-            </View>
+            </View> */}
         </View>
     );
 };
