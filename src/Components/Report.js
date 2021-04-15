@@ -50,8 +50,11 @@ const geoLoc = navig.getLocation();                                        //Loc
 
    //if selected item is "seçiniz", user cannot submit report.
    if (!selectedEvent){
+     alert('ERROR: No report specified.')
      return;
    }
+
+   //setTimeout(function(){ alert("Hello"); }, 3000);
 
    if (geoLoc[0]==-999){
      alert('ERROR: Unable to submit report, location access is off! To submit reports, please enable location access on your device.');
