@@ -60,8 +60,7 @@ const geoLoc = navig.getLocation();                                        //Loc
      return;
    }
 
-   //setTimeout(function(){ alert("Hello"); }, 3000);
-
+   
    if (geoLoc[0]==-999){
      alert('ERROR: Unable to submit report, location access is off! To submit reports, please enable location access on your device.');
      return;
@@ -81,6 +80,12 @@ const geoLoc = navig.getLocation();                                        //Loc
     setSelectedCategory(null)
     setSelectedEvent(null)
     setWaiting(true)
+
+    //TODO:
+    //MOVE THIS TO SERVERSIDE AND RANDOMIZE THE WAITTIME
+    //TO MAKE EVENT-TIME-USER ASSOCIATIONS UNRELIABLE
+    setTimeout(function(){ setWaiting(false) }, 300000);
+    //setTimeout(function(){ setWaiting(false) }, 1000);
     setModalVisible(!modalVisible)
   };
 
