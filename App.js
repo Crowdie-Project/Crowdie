@@ -1,4 +1,4 @@
-//By the CrowdChain Team, 2021
+//By the Crowdie Team, 2021
 
 //IMPORTS
 import React, {useEffect, useState} from 'react';
