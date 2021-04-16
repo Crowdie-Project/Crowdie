@@ -1,4 +1,4 @@
-# CrowdChain
+# Crowdie
 
 <p align="center">
   <a href="https://crowdchain.readthedocs.io/">
