@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "CrowdChainApp",
-    "slug": "CrowdChainApp",
-    "version": "0.0.1",
-    "orientation": "portrait",
+    "name": "CrowdieApp",
+    "slug": "CrowdieApp",
+    "version": "0.0.2",
+    "orientation": "landscape",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
