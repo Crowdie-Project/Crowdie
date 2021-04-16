@@ -1,8 +1,8 @@
 # Crowdie
 
 <p align="center">
-  <a href="https://crowdchain.readthedocs.io/">
-         <img alt="Documentation" src="https://img.shields.io/readthedocs/crowdchain">
+  <a href="https://crowdie.readthedocs.io/">
+         <img alt="Documentation" src="https://img.shields.io/readthedocs/crowdie">
   </a>
 </p>
 

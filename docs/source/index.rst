@@ -1,9 +1,9 @@
-.. CrowdChain documentation master file, created by
+.. Crowdie documentation master file, created by
    sphinx-quickstart on Thu Apr  1 17:29:04 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to CrowdChain's documentation!
+Welcome to Crowdie's documentation!
 ======================================
 
 .. toctree::
