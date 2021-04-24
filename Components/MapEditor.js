@@ -28,7 +28,7 @@ return (
       key={point.id}
       coordinate={[point.LAT,point.LON]}
       description={<MarkerDescription report={point}/>}
-      pinColor={colors.filter(color => color.CategoryCode == point.CategoryCode).map(color => color.HexCode)}
+      pinColor={colors.filter(color => color.CategoryCode == point.CategoryCode).map(color => color.HexCode)[0]}
     />     
     
   ))}

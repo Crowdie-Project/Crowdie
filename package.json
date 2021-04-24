@@ -24,7 +24,8 @@
     "react-native-dotenv": "^2.5.3",
     "react-native-maps": "https://github.com/expo/react-native-maps.git",
     "react-native-simple-radio-button": "^2.7.4",
-    "react-native-web": "^0.15.0"
+    "react-native-web": "^0.15.0",
+    "time-series-clustering": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
