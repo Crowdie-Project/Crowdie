@@ -4,8 +4,7 @@ import { StyleSheet, View,ScrollView,Text,Pressable } from 'react-native';
 import Report from './Report';
 import {supabase} from './Supabase.js';
 import MapEditor from './MapEditor';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-
+import timeSeriesClustering from 'time-series-clustering';
 
 
 
@@ -86,6 +85,43 @@ const Home = ({user}) => {
     supabase.auth.signOut().catch(console.error);
 };
 
+var getClusters = require('time-series-clustering');
+var clusterConfig = {
+  // max time distance for two items to be in the same cluster
+  maxDistance: 60 * 60 * 2 * 1000 * 1, // 2 hour
+  // filter cluster with a time frame smaller than minTimeFrame
+  minTimeFrame: 30 * 1 * 1 * 1000 * 1, // 30 second
+  // min number of items to get a relevant cluster
+  minRelevance: 2
+};
+
+function convertTime(timestamptz) {
+  //2021-04-24T14:02:44+00:00
+  var t = timestamptz.indexOf("T")
+  var date = timestamptz.substring(0,t+9)+"Z"
+  var d = new Date(date);
+  var myEpoch = d.getTime();
+  console.log(date)
+  console.log(myEpoch)
+  return myEpoch;
+ 
+};
+
+var reportlist = reports.map((report) => {
+  var container = {};
+  container["id"] = report.id;
+  container["value"] = convertTime(report.TIME);
+  return container;
+}
+);
+
+var convertedData = {};
+convertedData["data"] = reportlist;
+
+
+
+
+
     return (
         <View style={styles.container}>
       <Report
@@ -98,7 +134,14 @@ const Home = ({user}) => {
                  <Text style={styles.header}>Reported Events</Text>
                    <ScrollView style={styles.scrollview}>
                
-                    
+                 {getClusters(convertedData, clusterConfig).clusters.map((cluster) => (
+                   <Text>
+                  {cluster.ids.map( (id) => (
+                     <Text>{"\n"}id:{id}, time: {reports.filter( report => report.id == id).map( report => report.TIME)}</Text>
+                   ))} 
+                   </Text>
+                 ))}
+                 {console.log(getClusters(convertedData, clusterConfig))}
                     {reports.length ? (
                         reports.map((report) => (
                             <Text key={report.id} style={styles.reports}>
@@ -111,7 +154,7 @@ const Home = ({user}) => {
                         </Text>
                     )}
                 
-
+                  
                 </ScrollView>
 
           </View>  
@@ -167,7 +210,7 @@ const styles = StyleSheet.create({
       right: 10
     },
     scrollview: {
-      height: 150,
+      height: 250,
       padding: 5
     },
     header: {
