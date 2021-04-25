@@ -1,19 +1,27 @@
 //REACT IMPORTS
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, View,ScrollView,Text,Pressable } from 'react-native';
+import { StyleSheet, View,ScrollView,Text,Pressable, Button } from 'react-native';
 import Report from './Report';
 import {supabase} from './Supabase.js';
 import MapEditor from './MapEditor';
 import timeSeriesClustering from 'time-series-clustering';
-
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Home = ({user}) => {
     const [reports, setReports] = useState([]);
     const [EventCategories, setEventCategories] = useState([]);
     const [Colors, setColors] = useState([]);
     const [selectedFilter, setFilter] = useState([]);
-  
+//date
+const [startDate, setStartDate] = useState(new Date());
+const [endDate, setEndDate] = useState(null);
+const onChange = dates => {
+  const [start, end] = dates;
+  setStartDate(start);
+  setEndDate(end);
+};
+
     useEffect(() => {
     
       // let url = window.location.hash;
@@ -88,11 +96,11 @@ const Home = ({user}) => {
 var getClusters = require('time-series-clustering');
 var clusterConfig = {
   // max time distance for two items to be in the same cluster
-  maxDistance: 60 * 60 * 2 * 1000 * 1, // 2 hour
+  maxDistance: 60 * 60 * 1* 1000 * 1, // 1 hour
   // filter cluster with a time frame smaller than minTimeFrame
-  minTimeFrame: 30 * 1 * 1 * 1000 * 1, // 30 second
+  minTimeFrame: 1 * 1 * 1 * 1000 * 1, // 1 second
   // min number of items to get a relevant cluster
-  minRelevance: 2
+  minRelevance: 1
 };
 
 function convertTime(timestamptz) {
@@ -130,6 +138,16 @@ convertedData["data"] = reportlist;
            EventCategories={EventCategories}
            setEventCategories={setEventCategories}
          />
+            <View style={styles.dateContainer}>
+            <DatePicker
+      selected={startDate}
+      onChange={onChange}
+      startDate={startDate}
+      endDate={endDate}
+      selectsRange
+      inline
+    />
+        </View>
        <View style={styles.reportWrapper}>
                  <Text style={styles.header}>Reported Events</Text>
                    <ScrollView style={styles.scrollview}>
@@ -159,7 +177,9 @@ convertedData["data"] = reportlist;
 
           </View>  
         <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
+     
         <View style={styles.filterContainer}>
+          
          {Colors.map((color) => (
            <Pressable
            style={[styles.button,{backgroundColor:color.HexCode}]}
@@ -248,6 +268,14 @@ const styles = StyleSheet.create({
         zIndex: 9999,
         right: 10,
         bottom: 20
+      },
+      dateContainer: {
+        padding: 10,
+        position: "absolute",
+        zIndex: 89999,
+        right: 20,
+        top: 20,
+        backgroundColor: "#FFF"
       },
     buttonLogout: {
         backgroundColor: "#000",
