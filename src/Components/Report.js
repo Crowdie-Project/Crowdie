@@ -16,7 +16,7 @@ import {supabase} from './Supabase.js';
 
 //MODULE IMPORTS
 import Navig from "./Nav";
-import { Icon } from 'leaflet';
+
 
 //////////////////
 //MAIN
