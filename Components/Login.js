@@ -79,6 +79,13 @@ const Login = () => {
                 </Text>
             )}
             <View>
+                   <Pressable
+                     style={styles.button}
+                     onPress={() =>handleLogin("LOGIN")}
+                    >
+                        <Text style={styles.buttonText}>Sign In</Text>
+                    </Pressable>
+
                     <Pressable
                     style={styles.button}
                         type="submit"
@@ -88,13 +95,6 @@ const Login = () => {
                     <Text style={styles.buttonText}>Sign Up</Text>
                     </Pressable>
                 
-                    <Pressable
-                     style={styles.button}
-                     onPress={() =>handleLogin("LOGIN")}
-                    >
-                        <Text style={styles.buttonText}>Sign In</Text>
-                    </Pressable>
-             
             </View>
             {/* <View>
              <Text>Or continue with</Text>
@@ -127,7 +127,8 @@ const Login = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#D1D1D1',
+        paddingHorizontal: 50,
+    paddingBottom: 50,
         alignItems: 'center',
         justifyContent: 'space-evenly'
       },

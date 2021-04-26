@@ -9,11 +9,12 @@ import Timeline from './Timeline';
 import moment from 'moment';
 
 
-const Home = ({user}) => {
-    const [reports, setReports] = useState([]);
-    const [EventCategories, setEventCategories] = useState([]);
-    const [Colors, setColors] = useState([]);
-    const [selectedFilter, setFilter] = useState([]);
+const Home = () => {
+  const [user, setUser] = useState(null);
+  const [reports, setReports] = useState([]);
+  const [EventCategories, setEventCategories] = useState([]);
+  const [Colors, setColors] = useState([]);
+  const [selectedFilter, setFilter] = useState([]);
 //date
 const [startDate, setStartDate] = useState(null);
 const [endDate, setEndDate] = useState(null);
@@ -147,6 +148,8 @@ convertedData["data"] = reportlist;
            setReports={setReports}
            EventCategories={EventCategories}
            setEventCategories={setEventCategories}
+           user={user}
+           setUser={setUser}
          />
   
        <Timeline 
@@ -197,13 +200,15 @@ convertedData["data"] = reportlist;
          ))}
        
         </View>
-        <View style={styles.logoutContainer}>
+     {!user ? <View/> :
+      <View style={styles.logoutContainer}>
         <Pressable 
                style={styles.buttonLogout}
                onPress={handleLogout}>
                   <Text style={styles.LogoutText}>Log out</Text>
          </Pressable>
         </View>
+        } 
     </View> 
     );
 };
