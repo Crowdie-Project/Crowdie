@@ -5,33 +5,15 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text,Pressable } from 'react-native';
 import {supabase} from './Components/Supabase.js';
 import Home from './Components/Home';
-import Login from './Components/Login';
 
 
 //MAIN
 
 export default function App() {
-  const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const session = supabase.auth.session();
-        setUser(session?.user ?? null);
-
-        const { data: authListener } = supabase.auth.onAuthStateChange(
-            async (event, session) => {
-                const currentUser = session?.user;
-                setUser(currentUser ?? null);
-            }
-        );
-
-        return () => {
-            authListener?.unsubscribe();
-        };
-    }, [user]);
 
   return (
       <View style={styles.container}>
-         {!user ? <Login /> : <Home user={user} />}
+         <Home/>
       </View>
 
   );
