@@ -5,8 +5,9 @@ import Report from './Report';
 import {supabase} from './Supabase.js';
 import MapEditor from './MapEditor';
 import timeSeriesClustering from 'time-series-clustering';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import Timeline from './Timeline';
+import moment from 'moment';
+
 
 const Home = ({user}) => {
     const [reports, setReports] = useState([]);
@@ -14,13 +15,16 @@ const Home = ({user}) => {
     const [Colors, setColors] = useState([]);
     const [selectedFilter, setFilter] = useState([]);
 //date
-const [startDate, setStartDate] = useState(new Date());
+const [startDate, setStartDate] = useState(null);
 const [endDate, setEndDate] = useState(null);
+
+
 const onChange = dates => {
   const [start, end] = dates;
   setStartDate(start);
   setEndDate(end);
 };
+
 
     useEffect(() => {
     
@@ -36,15 +40,21 @@ const onChange = dates => {
       // if (result.type === "recovery") {
       //     setRecoveryToken(result.access_token);
       // }
-  
+     
       fetchReports().catch(console.error);
-  }, [selectedFilter]);
+  }, [selectedFilter,startDate,endDate]);
   
     const fetchReports = async () => {
+      if (startDate == null && endDate == null){
+        setStartDate(new Date("2021-03-01"));
+        setEndDate(new Date());
+      }
       let { data: reports, error } = await supabase
           .from("TestReports")
           .select("*")
           .in('CategoryCode', selectedFilter)
+          .gt('TIME',moment(startDate).format('YYYY-MM-DDTHH:MM:SS') )
+          .lte('TIME',moment(endDate).format('YYYY-MM-DDTHH:MM:SS'))
           .order("id", { ascending: false });
       if (error) console.log("error", error);
       else setReports(reports);
@@ -138,20 +148,17 @@ convertedData["data"] = reportlist;
            EventCategories={EventCategories}
            setEventCategories={setEventCategories}
          />
-            <View style={styles.dateContainer}>
-            <DatePicker
-      selected={startDate}
-      onChange={onChange}
-      startDate={startDate}
-      endDate={endDate}
-      selectsRange
-      inline
-    />
-        </View>
+  
+       <Timeline 
+       startDate={startDate}
+       endDate={endDate}
+       onChange={onChange}
+       />
+      {console.log(endDate)}
        <View style={styles.reportWrapper}>
                  <Text style={styles.header}>Reported Events</Text>
                    <ScrollView style={styles.scrollview}>
-               
+    
                  {getClusters(convertedData, clusterConfig).clusters.map((cluster) => (
                    <Text>
                   {cluster.ids.map( (id) => (
@@ -269,14 +276,7 @@ const styles = StyleSheet.create({
         right: 10,
         bottom: 20
       },
-      dateContainer: {
-        padding: 10,
-        position: "absolute",
-        zIndex: 89999,
-        right: 20,
-        top: 20,
-        backgroundColor: "#FFF"
-      },
+ 
     buttonLogout: {
         backgroundColor: "#000",
         padding: 10,
