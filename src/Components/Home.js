@@ -124,6 +124,7 @@ convertedData["data"] = reportlist;
 
     return (
         <View style={styles.container}>
+          {AnomalyDetection(data)}
       <Report
            reports={reports}
            setReports={setReports}
