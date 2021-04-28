@@ -32,7 +32,6 @@ export default function App() {
   return (
       <View style={styles.container}>
          {!user ? <Login /> : <Home user={user} />}
-         {AnomalyDetection()}
       </View>
   );
 }
