@@ -118,7 +118,8 @@ var reportlist = reports.map((report) => {
 var convertedData = {};
 convertedData["data"] = reportlist;
 
-
+//TODO - list of objects where objects are {"lat":number, "long":number, "t":number}
+var data = [];
 
 
 
