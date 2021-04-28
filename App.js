@@ -7,12 +7,11 @@ import {supabase} from './Components/Supabase.js';
 import Home from './Components/Home';
 import Login from './Components/Login';
 
-
 //MAIN
 
 export default function App() {
-  const [user, setUser] = useState(null);
 
+  const [user, setUser] = useState(null);
     useEffect(() => {
         const session = supabase.auth.session();
         setUser(session?.user ?? null);
