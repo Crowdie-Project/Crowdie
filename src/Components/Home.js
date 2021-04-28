@@ -46,16 +46,18 @@ const onChange = dates => {
   }, [selectedFilter,startDate,endDate]);
   
     const fetchReports = async () => {
+      var filterStart = startDate;
+      var filterEnd = endDate;
       if (startDate == null && endDate == null){
-        setStartDate(new Date("2021-03-01"));
-        setEndDate(new Date());
+        filterStart = new Date("2021-03-01");
+        filterEnd = new Date();
       }
       let { data: reports, error } = await supabase
           .from("TestReports")
           .select("*")
           .in('CategoryCode', selectedFilter)
-          .gt('TIME',moment(startDate).format('YYYY-MM-DDTHH:MM:SS') )
-          .lte('TIME',moment(endDate).format('YYYY-MM-DDTHH:MM:SS'))
+          .gt('TIME',moment(filterStart).format('YYYY-MM-DDTHH:MM:SS') )
+          .lt('TIME',moment(filterEnd).add(1,'days').format('YYYY-MM-DDTHH:MM:SS'))
           .order("id", { ascending: false });
       if (error) console.log("error", error);
       else setReports(reports);
@@ -107,11 +109,11 @@ const onChange = dates => {
 var getClusters = require('time-series-clustering');
 var clusterConfig = {
   // max time distance for two items to be in the same cluster
-  maxDistance: 60 * 60 * 1* 1000 * 1, // 1 hour
+  maxDistance: 60 * 60 * 24* 1000 * 2, // 1 hour
   // filter cluster with a time frame smaller than minTimeFrame
   minTimeFrame: 1 * 1 * 1 * 1000 * 1, // 1 second
   // min number of items to get a relevant cluster
-  minRelevance: 1
+  minRelevance: 2
 };
 
 function convertTime(timestamptz) {
@@ -126,18 +128,40 @@ function convertTime(timestamptz) {
  
 };
 
-var reportlist = reports.map((report) => {
+var reportsforevents = EventCategories.map((category) => {
+  var eventList = [];
+  eventList = reports.filter(report => report.CategoryCode == category.ChildCode);
+  return eventList;
+});
+
+var reportlists = reportsforevents.map((lst) => {
+lst.map((report) => {
   var container = {};
   container["id"] = report.id;
   container["value"] = convertTime(report.TIME);
   return container;
-}
-);
+})
+});
 
-var convertedData = {};
-convertedData["data"] = reportlist;
+var convertedDataList = reportlists.map((reportlist) =>{
+     var convertedData = {};
+     convertedData["data"] = reportlist;
+     return convertedData;
+});
 
 
+
+// var reportlist = reports.map((report) => {
+//   var container = {};
+//   container["id"] = report.id;
+//   container["value"] = convertTime(report.TIME);
+//   return container;
+// });
+
+
+// var convertedData = {};
+// convertedData["data"] = reportlist;
+     
 
 
 
@@ -161,15 +185,19 @@ convertedData["data"] = reportlist;
        <View style={styles.reportWrapper}>
                  <Text style={styles.header}>Reported Events</Text>
                    <ScrollView style={styles.scrollview}>
-    
-                 {getClusters(convertedData, clusterConfig).clusters.map((cluster) => (
-                   <Text>
-                  {cluster.ids.map( (id) => (
-                     <Text>{"\n"}id:{id}, time: {reports.filter( report => report.id == id).map( report => report.TIME)}</Text>
-                   ))} 
-                   </Text>
-                 ))}
-                 {console.log(getClusters(convertedData, clusterConfig))}
+  {/* {convertedDataList.map((convertedData) =>
+   (getClusters(convertedData, clusterConfig).clusters.map((cluster) => (
+    <Text>
+   {cluster.ids.map( (id) => (
+      <Text>{"\n"}code:{reports.filter( report => report.id == id).map( report => report.CODE)}, time: {reports.filter( report => report.id == id).map( report => report.TIME)}</Text>
+   ))} 
+    </Text>
+   )))
+  )}
+     */}
+      
+
+          
                     {reports.length ? (
                         reports.map((report) => (
                             <Text key={report.id} style={styles.reports}>
