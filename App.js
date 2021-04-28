@@ -6,6 +6,7 @@ import { StyleSheet, View,ScrollView,Text,Pressable } from 'react-native';
 import {supabase} from './Components/Supabase.js';
 import Home from './Components/Home';
 import Login from './Components/Login';
+import AnomalyDetection from './Components/AnomalyDetection';
 
 //MAIN
 
@@ -31,8 +32,8 @@ export default function App() {
   return (
       <View style={styles.container}>
          {!user ? <Login /> : <Home user={user} />}
+         {AnomalyDetection()}
       </View>
-
   );
 }
 
