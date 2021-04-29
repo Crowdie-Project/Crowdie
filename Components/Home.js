@@ -47,9 +47,9 @@ const onChange = dates => {
   
     const fetchReports = async () => {
       var filterStart = startDate;
-      var filterEnd = endDate;
+      var filterEnd = moment(endDate).add(1,'days');
       if (startDate == null && endDate == null){
-        filterStart = new Date("2021-03-01");
+        filterStart = moment(new Date()).subtract(24,'hours');
         filterEnd = new Date();
       }
       let { data: reports, error } = await supabase
@@ -57,7 +57,7 @@ const onChange = dates => {
           .select("*")
           .in('CategoryCode', selectedFilter)
           .gt('TIME',moment(filterStart).format('YYYY-MM-DDTHH:MM:SS') )
-          .lt('TIME',moment(filterEnd).add(1,'days').format('YYYY-MM-DDTHH:MM:SS'))
+          .lt('TIME',moment(filterEnd).format('YYYY-MM-DDTHH:MM:SS'))
           .order("id", { ascending: false });
       if (error) console.log("error", error);
       else setReports(reports);
@@ -109,7 +109,7 @@ const onChange = dates => {
 var getClusters = require('time-series-clustering');
 var clusterConfig = {
   // max time distance for two items to be in the same cluster
-  maxDistance: 60 * 60 * 24* 1000 * 2, // 1 hour
+  maxDistance: 60 * 60 * 1* 1000 * 1, // 1 hour
   // filter cluster with a time frame smaller than minTimeFrame
   minTimeFrame: 1 * 1 * 1 * 1000 * 1, // 1 second
   // min number of items to get a relevant cluster
@@ -128,39 +128,39 @@ function convertTime(timestamptz) {
  
 };
 
-var reportsforevents = EventCategories.map((category) => {
-  var eventList = [];
-  eventList = reports.filter(report => report.CategoryCode == category.ChildCode);
-  return eventList;
-});
+// var reportsforevents = EventCategories.map((category) => {
+//   var eventList = [];
+//   eventList = reports.filter(report => report.CategoryCode == category.ChildCode);
+//   return eventList;
+// });
 
-var reportlists = reportsforevents.map((lst) => {
-lst.map((report) => {
-  var container = {};
-  container["id"] = report.id;
-  container["value"] = convertTime(report.TIME);
-  return container;
-})
-});
-
-var convertedDataList = reportlists.map((reportlist) =>{
-     var convertedData = {};
-     convertedData["data"] = reportlist;
-     return convertedData;
-});
-
-
-
-// var reportlist = reports.map((report) => {
+// var reportlists = reportsforevents.map((lst) => {
+// lst.map((report) => {
 //   var container = {};
 //   container["id"] = report.id;
 //   container["value"] = convertTime(report.TIME);
 //   return container;
+// })
+// });
+
+// var convertedDataList = reportlists.map((reportlist) =>{
+//      var convertedData = {};
+//      convertedData["data"] = reportlist;
+//      return convertedData;
 // });
 
 
-// var convertedData = {};
-// convertedData["data"] = reportlist;
+
+var reportlist = reports.map((report) => {
+  var container = {};
+  container["id"] = report.id;
+  container["value"] = convertTime(report.TIME);
+  return container;
+});
+
+
+var convertedData = {};
+convertedData["data"] = reportlist;
      
 
 

@@ -5506,9 +5506,9 @@ react-native-dotenv@^2.5.3:
   dependencies:
     dotenv "^8.0.0"
 
-"react-native-maps@https://github.com/expo/react-native-maps.git":
+"react-native-maps@git+https://github.com/expo/react-native-maps.git":
   version "0.25.0"
-  resolved "https://github.com/expo/react-native-maps.git#ecb9c829f8eb9d7707dfd2baa87556f2f2a95236"
+  resolved "git+https://github.com/expo/react-native-maps.git#ecb9c829f8eb9d7707dfd2baa87556f2f2a95236"
   dependencies:
     leaflet "^1.5.1"
     react-leaflet "^2.4.0"
