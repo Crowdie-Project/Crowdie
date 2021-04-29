@@ -3,9 +3,6 @@
 //IMPORTS
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text,Pressable } from 'react-native';
-//URL-Polyfill
-import "react-native-url-polyfill/auto";
-
 import {supabase} from './Components/Supabase.js';
 import Home from './Components/Home';
 import Login from './Components/Login';
