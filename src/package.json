@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "react-native-async-storage/async-storage",
     "@react-native-community/datetimepicker": "3.0.4",
     "@react-native-picker/picker": "^1.12.0",
     "@supabase/supabase-js": "^1.6.0",
