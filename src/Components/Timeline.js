@@ -47,8 +47,7 @@ const Timeline = ({startDate,endDate,onChange}) => {
                          inline
                  />
        
-                
-                  <Button title="filter" style={styles.button}  onPress={() => setModalVisible(false)} color="#662EDD"></Button>
+             
               </View>
                  
         </View> 
