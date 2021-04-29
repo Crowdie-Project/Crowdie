@@ -9,10 +9,9 @@ import "react-native-url-polyfill/auto";
 import {supabase} from './Components/Supabase.js';
 import Home from './Components/Home';
 import Login from './Components/Login';
-import {AnomalyDetection} from './Components/AnomalyDetection';
+import AnomalyDetection from './Components/AnomalyDetection';
 
 //MAIN
-//console.log(supabase);
 
 export default function App() {
 
