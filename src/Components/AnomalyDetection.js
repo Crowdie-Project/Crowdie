@@ -1,4 +1,4 @@
-import { IsolationForest } from 'isolation-forest'
+import { IsolationForest } from 'isolation-forest';
 import { Component } from 'react';
 
 export default function AnomalyDetection(data) {
