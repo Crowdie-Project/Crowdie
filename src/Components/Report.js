@@ -15,8 +15,9 @@ import Login from './Login';
 import {supabase} from './Supabase.js';
 
 //MODULE IMPORTS
+//import { Icon } from 'leaflet';
 import Navig from "./Nav";
-
+import AnomalyDetection from './AnomalyDetection';
 
 //////////////////
 //MAIN
