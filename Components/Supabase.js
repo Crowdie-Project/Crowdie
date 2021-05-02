@@ -9,7 +9,7 @@
 // available if __DEV__ is true, NULL otherwise. 
 
 import env from '../config/env';
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-community/async-storage'
 
 //SUPABASE IMPORTS
 import { createClient } from '@supabase/supabase-js'
