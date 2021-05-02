@@ -68,6 +68,7 @@ const onChange = dates => {
     fetchMainCategories().catch(console.error);
   },[]);
   
+  //TODO MIGRATE
   const fetchMainCategories = async () => {
       
     let { data: EventCategories, error } = await supabase
@@ -93,6 +94,7 @@ const onChange = dates => {
         let defaultFilter = Colors.map((color) => color.CategoryCode)  
         setFilter(defaultFilter)
   };
+  //TODO END
   
   const filterSelected = (newFilter) => {
     if (selectedFilter == newFilter){
