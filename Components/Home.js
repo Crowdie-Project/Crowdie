@@ -7,6 +7,7 @@ import MapEditor from './MapEditor';
 import timeSeriesClustering from 'time-series-clustering';
 import Timeline from './Timeline';
 import moment from 'moment';
+import AnomalyDetection from './AnomalyDetection';
 
 
 const Home = () => {
