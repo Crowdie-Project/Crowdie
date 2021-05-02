@@ -1,13 +1,18 @@
-//REACT IMPORTS
+//LIBRARY IMPORTS
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text,Pressable, Button } from 'react-native';
-import Report from './Report';
-import {supabase} from './Supabase.js';
-import MapEditor from './MapEditor';
 import timeSeriesClustering from 'time-series-clustering';
-import Timeline from './Timeline';
 import moment from 'moment';
+import {readString} from 'react-papaparse';
 
+//LOCAL IMPORTS
+import {supabase} from './Supabase.js';
+import Report from './Report';
+import MapEditor from './MapEditor';
+import Timeline from './Timeline';
+
+//ADDITIONAL DATA
+import cats from '../reportCodes/categories.csv';
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -63,22 +68,47 @@ const onChange = dates => {
       else setReports(reports);
   };
   
-  
+  //TODO MIGRATE
   useEffect(() => {
     fetchMainCategories().catch(console.error);
+    //fetchSomeMore().catch(console.error);
   },[]);
   
-  //TODO MIGRATE
   const fetchMainCategories = async () => {
+    let { data: EventCategories, error } = await fetch(cats)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+      if (error)console.log("error", error);
+      else{
+        setEventCategories(EventCategories);
+        //console.log("CATS!");
+        //console.log(EventCategories);
+      }
+  }
+
+  /*const fetchMainCategoriesLegacy = async () => {
       
     let { data: EventCategories, error } = await supabase
           .from('EventCategories')
           .select("*")
           // Filters
           .eq('ParentCode', '0')
-          if (error) console.log("error", error);
-          else setEventCategories(EventCategories);
+          if (error)console.log("error", error);
+          else{
+            setEventCategories(EventCategories);
+            //console.log("CATS!");
+            //console.log(EventCategories);
+          }
   };
+
+  const fetchSomeMore = async () => {
+    fetch(cats)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+    .then(c => {
+      console.log('csv decoded:', c);
+  },[]);
+  }*/
   
   useEffect(() => {
     fetchCategoryColors().catch(console.error);
