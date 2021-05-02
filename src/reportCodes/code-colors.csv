@@ -1,11 +1,11 @@
-﻿"id","HexCode","CategoryCode","ColorName","CategoryName"
-"2","#002ABF","1200","dark blue","Generic Infrastructure Problem"
-"3","#00EB96","1300","cyan","Generic Traffic and Transportation Problem"
-"4","#0C9600","1400","dark green","Natural Disaster"
-"5","#FAFF00","1500","yellow","Generic Urban Problem"
-"6","#00B2FF","1600","blue","Generic Environmental Problem"
-"7","#FFA800","1700","orange","Generic Health Problem"
-"8","#EB6300","1800","dark orange","Extraordinary Circumstances"
-"9","#EB00F0","3100","purple","Spontaneous Social Events"
-"10","#9200D7","3200","dark purple","One-day Social Events"
-"11","#EB0055","3300","dark pink","Daily Social Events"
+CategoryCode,CategoryName,HexCode,ColorName
+1200,Generic Infrastructure Problem,#002ABF,dark blue
+1300,Generic Traffic and Transportation Problem,#00EB96,cyan
+1400,Natural Disaster,#0C9600,dark green
+1500,Generic Urban Problem,#FAFF00,yellow
+1600,Generic Environmental Problem,#00B2FF,blue
+1700,Generic Health Problem,#FFA800,orange
+1800,Extraordinary Circumstances,#EB6300,dark orange
+3100,Spontaneous Social Events,#EB00F0,purple
+3200,One-day Social Events,#9200D7,dark purple
+3300,Daily Social Events,#EB0055,dark pink

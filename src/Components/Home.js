@@ -13,6 +13,7 @@ import Timeline from './Timeline';
 
 //ADDITIONAL DATA
 import cats from '../reportCodes/categories.csv';
+import ccolors from '../reportCodes/code-colors.csv';
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -113,8 +114,19 @@ const onChange = dates => {
   useEffect(() => {
     fetchCategoryColors().catch(console.error);
   },[]);
-  
+
+
   const fetchCategoryColors = async () => {
+    let { data: Colors, error } = await fetch(ccolors)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+      if (error)console.log("error", error);
+      else setColors(Colors);
+      let defaultFilter = Colors.map((color) => color.CategoryCode);  
+      setFilter(defaultFilter);
+  }
+  
+  /*const fetchCategoryColorsLegacy = async () => {
       
     let { data: Colors, error } = await supabase
           .from('ColorCodes')
@@ -123,9 +135,8 @@ const onChange = dates => {
           else setColors(Colors);
         let defaultFilter = Colors.map((color) => color.CategoryCode)  
         setFilter(defaultFilter)
-  };
-  //TODO END
-  
+  };*/
+
   const filterSelected = (newFilter) => {
     if (selectedFilter == newFilter){
       setFilter(Colors.map((color) => color.CategoryCode))
@@ -238,7 +249,7 @@ convertedData["data"] = reportlist;
                         ))
                     ) : (
                         <Text style={styles.reports}>
-                            You do have any reported events yet!
+                            No news yet!
                         </Text>
                     )}
                 
