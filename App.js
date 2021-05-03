@@ -11,7 +11,6 @@ import AnomalyDetection from './Components/AnomalyDetection';
 //MAIN
 
 export default function App() {
-
   const [user, setUser] = useState(null);
     useEffect(() => {
         const session = supabase.auth.session();
@@ -31,7 +30,7 @@ export default function App() {
 
   return (
       <View style={styles.container}>
-         {!user ? <Login /> : <Home user={user} />}
+         <Home/>
       </View>
   );
 }

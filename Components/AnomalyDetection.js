@@ -2,16 +2,38 @@ import { IsolationForest } from 'isolation-forest'
 import { Component } from 'react';
 
 export default function AnomalyDetection(data) {
-  var isolationForest = new IsolationForest(100);
+  var normalReps = [];
   
-  isolationForest.fit(data) // Type ObjectArray ({}[]); 
- 
-  var scores = isolationForest.scores();
-  var scoreString = "";
+  if(data.length < 10){
+    console.log("Not enough reports.\n");
 
-  for(var i = 0; i < scores.length; i++) {
-    console.log(scores[i] + "\n");
+  }else if(data.length < 100){
+    var isolationForest = new IsolationForest(10);
+  
+    isolationForest.fit(data) // Type ObjectArray ({}[]); 
+  
+    var scores = isolationForest.scores();
+
+    for(var i = 0; i < scores.length; i++) {
+      if(scores[i] < 0.5){
+        console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
+      }
+    }
+
+  }else{
+    var isolationForest = new IsolationForest(100);
+    
+    isolationForest.fit(data) // Type ObjectArray ({}[]); 
+  
+    var scores = isolationForest.scores();
+
+    for(var i = 0; i < scores.length; i++) {
+      if(scores[i] < 0.5){
+      console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
+      }
+    }
   }
+  
 }
 
 /* var data = [

@@ -7,7 +7,7 @@ import React, { useEffect, useState, useRef} from 'react';
 import {View, Text,TextInput, Button, StyleSheet, ScrollView, Alert, Modal, Pressable} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
- 
+import Login from './Login';
 //SUPABASE IMPORTS
 //import { createClient } from '@supabase/supabase-js';
 
@@ -15,15 +15,15 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import {supabase} from './Supabase.js';
 
 //MODULE IMPORTS
+//import { Icon } from 'leaflet';
 import Navig from "./Nav";
-import { Icon } from 'leaflet';
 import AnomalyDetection from './AnomalyDetection';
 
 //////////////////
 //MAIN
 //////////////////
 
-const Report = ({reports,setReports,EventCategories,setEventCategories}) => {
+const Report = ({reports,setReports,EventCategories,setEventCategories,user,setUser}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedType,setType] = useState(0);
   var radio_props = [
@@ -114,6 +114,27 @@ useEffect(() => {
     setModalVisible(!modalVisible)
   }
   
+//LOGIN 
+
+
+useEffect(() => {
+    const session = supabase.auth.session();
+    setUser(session?.user ?? null);
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+        async (event, session) => {
+            const currentUser = session?.user;
+            setUser(currentUser ?? null);
+        }
+    );
+
+    return () => {
+        authListener?.unsubscribe();
+    };
+}, [user]);
+
+
+
 
     return (
       <View style={styles.container}> 
@@ -135,7 +156,7 @@ useEffect(() => {
               <Text style={styles.closeButtonText}>X</Text>
               
          </Pressable> 
-      
+      {!user ? <Login/> :
             <View style={styles.reportWrapper}>
                 
                 <Text style={styles.header}>Report</Text>
@@ -178,7 +199,7 @@ useEffect(() => {
                 
                 <Button title="submit" onPress={addReport} style={styles.btn} color="#662EDD"></Button>
             </View>
-               
+        }       
       </View> 
       </View>
 
