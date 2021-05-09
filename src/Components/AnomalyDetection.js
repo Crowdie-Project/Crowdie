@@ -3,6 +3,15 @@ import { Component } from 'react';
 
 export default function AnomalyDetection(data) {
   var normalReps = [];
+
+  //list of objects where objects are {"lat":number, "long":number, "t":number}
+  var data = reports.map((report) =>{
+    var container = {};
+    container["Lat"] = report.LAT;
+    container["Long"] = report.LON;
+    container["t"] = convertUnixTime(report.TIME);
+    return container;
+  });
   
     if(data.length < 10){
       console.log("Not enough reports.\n");
@@ -33,7 +42,22 @@ export default function AnomalyDetection(data) {
         }
       }
     }
+    return normalReps;
 }
+
+function convertUnixTime(timestamptz) {
+  var t = timestamptz.indexOf("T")
+  var date = timestamptz.substring(0,t+9)+"Z"
+  var d = new Date(date);
+  var myEpoch = d.getTime()/1000;
+  console.log(date)
+  console.log(myEpoch)
+  return myEpoch;
+};
+
+
+
+
 
 /* var data = [
   {"lat":41.080386328434905,"long":28.99703979492188,"t":1619593215},
