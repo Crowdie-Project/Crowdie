@@ -150,45 +150,12 @@ function convertTime(timestamptz) {
 //      return convertedData;
 // });
 
-
-
-var reportlist = reports.map((report) => {
-  var container = {};
-  container["id"] = report.id;
-  container["value"] = convertTime(report.TIME);
-  return container;
-});
-
-
-var convertedData = {};
-convertedData["data"] = reportlist;
-
-//TODO - list of objects where objects are {"lat":number, "long":number, "t":number}
-function convertUnixTime(timestamptz) {
-  var t = timestamptz.indexOf("T")
-  var date = timestamptz.substring(0,t+9)+"Z"
-  var d = new Date(date);
-  var myEpoch = d.getTime()/1000;
-  console.log(date)
-  console.log(myEpoch)
-  return myEpoch;
- 
-};
-
-
-var data = reports.map((report) =>{
-  var container = {};
-  container["Lat"] = report.LAT;
-  container["Long"] = report.LON;
-  container["t"] = convertUnixTime(report.TIME);
-  return container;
-}
-);
+var normalReports = [];
 
 
     return (
         <View style={styles.container}>
-          {AnomalyDetection(data)}
+          {normalReports = AnomalyDetection(reports)}
       <Report
            reports={reports}
            setReports={setReports}
@@ -236,7 +203,7 @@ var data = reports.map((report) =>{
                 </ScrollView>
 
           </View>  
-        <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
+        <MapEditor points={normalReports} colors={Colors} filter={selectedFilter}/>   
      
         <View style={styles.filterContainer}>
           
