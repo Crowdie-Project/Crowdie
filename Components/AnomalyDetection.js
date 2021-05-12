@@ -2,10 +2,12 @@ import { IsolationForest } from 'isolation-forest'
 import { Component } from 'react';
 
 export default function AnomalyDetection(data) {
+  
+  var allReps = data;
   var normalReps = [];
-
+  
   //list of objects where objects are {"lat":number, "long":number, "t":number}
-  var data = reports.map((report) =>{
+  var formattedReps = data.map((report) =>{
     var container = {};
     container["Lat"] = report.LAT;
     container["Long"] = report.LON;
@@ -13,37 +15,55 @@ export default function AnomalyDetection(data) {
     return container;
   });
   
-    if(data.length < 10){
+
+    if(formattedReps.length < 10){
       console.log("Not enough reports.\n");
   
-    }else if(data.length < 100){
+    }else if(formattedReps.length < 100){
       var isolationForest = new IsolationForest(10);
     
-      isolationForest.fit(data) // Type ObjectArray ({}[]); 
+      isolationForest.fit(formattedReps) // Type ObjectArray ({}[]); 
     
       var scores = isolationForest.scores();
   
       for(var i = 0; i < scores.length; i++) {
         if(scores[i] < 0.5){
           console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
+          normalReps.push(allReps[i]);
         }
       }
   
     }else{
       var isolationForest = new IsolationForest(100);
       
-      isolationForest.fit(data) // Type ObjectArray ({}[]); 
+      isolationForest.fit(formattedReps) // Type ObjectArray ({}[]); 
     
       var scores = isolationForest.scores();
   
       for(var i = 0; i < scores.length; i++) {
         if(scores[i] < 0.5){
         console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
+        normalReps.push(allReps[i]);
         }
       }
     }
     return normalReps;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function convertUnixTime(timestamptz) {
   var t = timestamptz.indexOf("T")
@@ -55,6 +75,20 @@ function convertUnixTime(timestamptz) {
   return myEpoch;
 };
 
+
+//This will be called before Anomaly detection starts. Anomaly detection will be called for each line of this table
+/* function createCodesHTable(data) {
+  var Hashtable = require('jshashtable');
+  var codesHT = new Hashtable();
+
+  Array.from(data).forEach((report) => {
+    var tempArr = codesHT.get(report.CODE).push(report);
+    codesHT.put(report.CODE, tempArr);
+  });
+
+  return codesHT;
+
+} */
 
 
 
