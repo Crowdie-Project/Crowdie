@@ -46,12 +46,13 @@ switch(report.CODE) {
         reportCode = "Flood";
     break;
     case 1402:
-        reportCat = "Generic Infrastructure Problem";
+        reportCat = "Natural Disaster";
         reportCode = "Storm";
     break;
     case 1403:
-        reportCat = "Generic Infrastructure Problem";
+        reportCat = "Natural Disaster";
         reportCode = "Earthquake";
+    break;
     case 1501:
         reportCat = "Generic Urban Problem";
         reportCode = "Sudden Bang";
