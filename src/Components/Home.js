@@ -5,7 +5,7 @@ import Report from './Report';
 import {supabase} from './Supabase.js';
 import MapEditor from './MapEditor';
 import timeSeriesClustering from 'time-series-clustering';
-import Timeline from './Timeline';
+import Filtering from './Filtering';
 import moment from 'moment';
 
 
@@ -18,7 +18,10 @@ const Home = () => {
 //date
 const [startDate, setStartDate] = useState(null);
 const [endDate, setEndDate] = useState(null);
+const [selectedCategories,setSelectedCategories] = useState([]);
 
+
+// const onSelectionsChange = selectedCategories => {
 
 const onChange = dates => {
   const [start, end] = dates;
@@ -41,9 +44,14 @@ const onChange = dates => {
       // if (result.type === "recovery") {
       //     setRecoveryToken(result.access_token);
       // }
+     if (selectedFilter == null){
+        setFilter(Colors.map((color) => color.CategoryCode));
+     }else{
+       setFilter(selectedCategories);
+     }
      
       fetchReports().catch(console.error);
-  }, [selectedFilter,startDate,endDate]);
+  }, [selectedFilter,selectedCategories,startDate,endDate]);
   
     const fetchReports = async () => {
       var filterStart = startDate;
@@ -77,6 +85,8 @@ const onChange = dates => {
           .eq('ParentCode', '0')
           if (error) console.log("error", error);
           else setEventCategories(EventCategories);
+
+          EventCategories.map(category => {container[category.Child] = category.ChildCode;});
   };
   
   useEffect(() => {
@@ -94,13 +104,14 @@ const onChange = dates => {
         setFilter(defaultFilter)
   };
   
-  const filterSelected = (newFilter) => {
-    if (selectedFilter == newFilter){
-      setFilter(Colors.map((color) => color.CategoryCode))
-    }else{
-      setFilter([newFilter])
-    }
-  }
+  // const filterSelected = (newFilter) => {
+  //   if (selectedFilter == newFilter){
+  //     setFilter(Colors.map((color) => color.CategoryCode))
+  //   }else{
+  //     setFilter([newFilter])
+  //   }
+  // }
+
 
   const handleLogout = async () => {
     supabase.auth.signOut().catch(console.error);
@@ -163,6 +174,22 @@ var convertedData = {};
 convertedData["data"] = reportlist;
      
 
+//   // selectedFruits is array of { label, value }
+//   setSelectedCategories(selectedCategories);
+//   if (selectedFilter == null){
+//     setFilter(Colors.map((color) => color.CategoryCode));
+//   }else{
+//     var newFilter = selectedCategories.map(element => {
+//      return container[element];
+//     });
+//     setFilter(newFilter);
+//   }
+ 
+//   // if (selectedFilter == newFilter){
+//   //   setFilter(Colors.map((color) => color.CategoryCode))
+//   // }else{
+  
+// }
 
 
     return (
@@ -176,10 +203,13 @@ convertedData["data"] = reportlist;
            setUser={setUser}
          />
   
-       <Timeline 
+       <Filtering 
        startDate={startDate}
        endDate={endDate}
        onChange={onChange}
+       eventCategories={EventCategories}
+       selectedCategories={selectedCategories}
+       setSelectedCategories={setSelectedCategories}
        />
       {console.log(endDate)}
        <View style={styles.reportWrapper}>
@@ -201,11 +231,14 @@ convertedData["data"] = reportlist;
                     {reports.length ? (
                         reports.map((report) => (
                             <Text key={report.id} style={styles.reports}>
+                           
+                              selectedfilter: {selectedFilter}
                               code: {report.CODE} lat: {report.LAT} lon: {report.LON}
                             </Text>
                         ))
                     ) : (
                         <Text style={styles.reports}>
+                              selectedfilter: {selectedFilter}
                             You do have any reported events yet!
                         </Text>
                     )}
@@ -216,18 +249,7 @@ convertedData["data"] = reportlist;
           </View>  
         <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
      
-        <View style={styles.filterContainer}>
-          
-         {Colors.map((color) => (
-           <Pressable
-           style={[styles.button,{backgroundColor:color.HexCode}]}
-           onPress={() => filterSelected(color.CategoryCode)}
-         >
-           <Text style={styles.textStyle}>{color.CategoryCode}</Text>
-         </Pressable>
-         ))}
-       
-        </View>
+      
      {!user ? <View/> :
       <View style={styles.logoutContainer}>
         <Pressable 
