@@ -21,7 +21,7 @@ const [endDate, setEndDate] = useState(null);
 const [selectedCategories,setSelectedCategories] = useState([]);
 
 
-// const onSelectionsChange = selectedCategories => {
+
 
 const onChange = dates => {
   const [start, end] = dates;
@@ -44,7 +44,7 @@ const onChange = dates => {
       // if (result.type === "recovery") {
       //     setRecoveryToken(result.access_token);
       // }
-    
+      setFilter(selectedCategories);
      
       fetchReports().catch(console.error);
   }, [selectedFilter,selectedCategories,startDate,endDate]);
@@ -56,13 +56,16 @@ const onChange = dates => {
         filterStart = moment(new Date()).subtract(24,'hours');
         filterEnd = new Date();
       }
-       if (selectedCategories.length != 0){
-          setFilter(selectedCategories);
+     var filterCategory = selectedFilter;
+       if (selectedCategories.length == 0){
+     
+         filterCategory = Colors.map((color) => color.CategoryCode) 
      }
+      
       let { data: reports, error } = await supabase
           .from("TestReports")
           .select("*")
-          .in('CategoryCode', selectedFilter)
+          .in('CategoryCode',filterCategory)
           .gt('TIME',moment(filterStart).format('YYYY-MM-DDTHH:MM:SS') )
           .lt('TIME',moment(filterEnd).format('YYYY-MM-DDTHH:MM:SS'))
           .order("id", { ascending: false });

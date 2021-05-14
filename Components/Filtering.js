@@ -16,13 +16,21 @@ const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategorie
    //[{label:"event1", value: "event1v"},{label:"event2", value:"event2v"}];
   
       
-   const onSelectionsChange = (selectedCategories) => {
-    // selectedFruits is array of { label, value }
-    
-    setSelectedCategories(selectedCategories.map( ({label,value}) => value))
-  }
+   const onSelectionsChange = (selected) => {
+    // selectedCategories is array of { label, value }
+      if (selected == []){
+        setSelectedCategories([]);
+      }else{
+      setSelectedCategories(selected.map( ({label,value}) => value));
+      }
+  };
 
-   
+  
+   const clearFilters = () => {
+      setSelectedCategories([]);
+      onChange([null,null]);
+      setModalVisible(false);
+   };
  
 
    
@@ -46,11 +54,10 @@ const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategorie
                 onPress={() => setModalVisible(false)}>
                 <Text style={styles.closeButtonText}>X</Text>
                 
-           </Pressable> 
-           <Text style={styles.header}>Event Filtering</Text>
+           </Pressable>
            <View style={styles.filterWrapper}>
            <View >
-             <Text>Select a date range:</Text>
+             <Text style={styles.header}>Select a date range</Text>
                   <DatePicker
                          dateFormat="YYYY/MM/DD"
                          selected={startDate}
@@ -61,19 +68,27 @@ const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategorie
                          inline
                  />
        
-             
+            
               </View>
+              
               <View style={styles.filterContainer}>
-   <Text>Select event categories:</Text>
+   <Text style={styles.header}>Select event categories</Text>
            <SelectMultiple
          items={categories}
          selectedItems={selectedCategories}
          onSelectionsChange={onSelectionsChange}
         />
-            <Text>selected categories:{selectedCategories}</Text>
+          
          </View>
+       
            </View>
-                 
+           <Pressable
+          style={[styles.buttonFilter]}
+          onPress={clearFilters}
+        >
+          <Text style={styles.filtertextStyle}>Clear filters</Text>
+        </Pressable>
+
         </View> 
         </View>
   
@@ -123,31 +138,31 @@ const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategorie
     },
     filterWrapper: {
       paddingHorizontal: 50,
-      paddingBottom: 50,
+      paddingBottom: 20,
       flexDirection: 'row'
     },
     filterContainer: {
       marginLeft: 20,
-      height: 280
- 
+      height: 300,
+      justifyContent: "center"
     },
     filtertextStyle: {
       color: "white",
       fontWeight: "bold",
       textAlign: "center"
     },
-    filterbutton: {
+    buttonFilter: {
       padding: 10,
       elevation: 2,
-      marginVertical: 5,
-      borderRadius: 20,
+      borderRadius: 5,
+      margin: 20,
+      backgroundColor: "#3781D2"
     },
     scrollview: {
-      height: 250
+      height: 300
     },
     header: {
-      fontSize: 24,
-      fontWeight: 'bold',
+      fontSize: 16,
       marginBottom: 20,
       textAlign: "center"
     },
