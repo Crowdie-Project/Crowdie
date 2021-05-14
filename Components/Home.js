@@ -44,11 +44,7 @@ const onChange = dates => {
       // if (result.type === "recovery") {
       //     setRecoveryToken(result.access_token);
       // }
-     if (selectedFilter == null){
-        setFilter(Colors.map((color) => color.CategoryCode));
-     }else{
-       setFilter(selectedCategories);
-     }
+    
      
       fetchReports().catch(console.error);
   }, [selectedFilter,selectedCategories,startDate,endDate]);
@@ -60,6 +56,9 @@ const onChange = dates => {
         filterStart = moment(new Date()).subtract(24,'hours');
         filterEnd = new Date();
       }
+       if (selectedCategories.length != 0){
+          setFilter(selectedCategories);
+     }
       let { data: reports, error } = await supabase
           .from("TestReports")
           .select("*")
@@ -85,8 +84,6 @@ const onChange = dates => {
           .eq('ParentCode', '0')
           if (error) console.log("error", error);
           else setEventCategories(EventCategories);
-
-          EventCategories.map(category => {container[category.Child] = category.ChildCode;});
   };
   
   useEffect(() => {
@@ -104,13 +101,7 @@ const onChange = dates => {
         setFilter(defaultFilter)
   };
   
-  // const filterSelected = (newFilter) => {
-  //   if (selectedFilter == newFilter){
-  //     setFilter(Colors.map((color) => color.CategoryCode))
-  //   }else{
-  //     setFilter([newFilter])
-  //   }
-  // }
+
 
 
   const handleLogout = async () => {
@@ -174,23 +165,6 @@ var convertedData = {};
 convertedData["data"] = reportlist;
      
 
-//   // selectedFruits is array of { label, value }
-//   setSelectedCategories(selectedCategories);
-//   if (selectedFilter == null){
-//     setFilter(Colors.map((color) => color.CategoryCode));
-//   }else{
-//     var newFilter = selectedCategories.map(element => {
-//      return container[element];
-//     });
-//     setFilter(newFilter);
-//   }
- 
-//   // if (selectedFilter == newFilter){
-//   //   setFilter(Colors.map((color) => color.CategoryCode))
-//   // }else{
-  
-// }
-
 
     return (
         <View style={styles.container}>
@@ -231,14 +205,11 @@ convertedData["data"] = reportlist;
                     {reports.length ? (
                         reports.map((report) => (
                             <Text key={report.id} style={styles.reports}>
-                           
-                              selectedfilter: {selectedFilter}
                               code: {report.CODE} lat: {report.LAT} lon: {report.LON}
                             </Text>
                         ))
                     ) : (
                         <Text style={styles.reports}>
-                              selectedfilter: {selectedFilter}
                             You do have any reported events yet!
                         </Text>
                     )}
