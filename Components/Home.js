@@ -53,7 +53,7 @@ const onChange = dates => {
       var filterStart = startDate;
       var filterEnd = moment(endDate).add(1,'days');
       if (startDate == null && endDate == null){
-        filterStart = moment(new Date()).subtract(24,'hours');
+        filterStart = moment(new Date()).subtract(1,'days');
         filterEnd = new Date();
       }
      var filterCategory = selectedFilter;
@@ -166,7 +166,38 @@ var reportlist = reports.map((report) => {
 
 var convertedData = {};
 convertedData["data"] = reportlist;
-     
+ 
+
+const [suggestions, setSuggestions] = useState([]);
+const [currLoc,setCurrLoc] = useState([]);
+
+useEffect(() => {
+ 
+  fetchSuggestions().catch(console.error);
+}, [EventCategories]);
+
+const fetchSuggestions = async () => {
+
+  navigator.geolocation.getCurrentPosition(
+    position => {
+       setCurrLoc([position.coords.latitude,position.coords.longitude]);
+    });
+  
+  const { data: suggestions, error } = await supabase
+      .from("TestReports")
+      .select("*")
+      .gt('LON', currLoc[1]-0.1)
+      .lt('LON',currLoc[1]+0.1)
+      .gt('LAT', currLoc[0]-0.1)
+      .lt('LAT', currLoc[0]+0.1)
+      .gt('TIME',moment(new Date()).subtract(1,'days').format('YYYY-MM-DDTHH:MM:SS') )
+//      .lt('TIME',moment(new Date()).format('YYYY-MM-DDTHH:MM:SS'))
+      .order("id", { ascending: false });
+  if (error) console.log("error", error);
+  else setSuggestions(suggestions);
+  console.log("suggestions****"+suggestions.map(x => x.LAT));
+};
+
 
 
     return (
@@ -203,7 +234,12 @@ convertedData["data"] = reportlist;
   )}
      */}
       
-
+      {suggestions.length ? (suggestions.map((report) => (   
+             <Text> SUGGESTİONS CODE {report.CODE} LAT {report.LAT} LONG {report.LON}</Text>)))
+            :(  <Text style={styles.reports}>
+              You do have any reported events yet!
+              {currLoc[0]} {currLoc[1]}
+          </Text>)}
           
                     {reports.length ? (
                         reports.map((report) => (

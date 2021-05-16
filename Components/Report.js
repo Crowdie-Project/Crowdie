@@ -16,7 +16,7 @@ import {supabase} from './Supabase.js';
 
 //MODULE IMPORTS
 import Navig from "./Nav";
-
+import moment from 'moment';
 
 //////////////////
 //MAIN
@@ -34,8 +34,7 @@ const Report = ({reports,setReports,EventCategories,setEventCategories,user,setU
 const navig = new Navig();
 //Geolocation array => [longitude, latitude, timestamp]
 //local timestamp is ignored in favor of serverside timestamp
-const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button           
-
+const geoLoc = navig.getLocation();
 
   const [errorText, setError] = useState("");
 
@@ -45,6 +44,37 @@ const geoLoc = navig.getLocation();                                        //Loc
   const [selectedEvent, setSelectedEvent] = useState();
   const [waiting, setWaiting] = useState();
   //const eventTypes = {"doğal afetler": "101", "yangın": "102", "sosyal anket":"103"};
+
+//   const [suggestions, setSuggestions] = useState([]);
+//   const [currLoc,setCurrLoc] = useState([]);
+  
+//   useEffect(() => {
+   
+//     fetchSuggestions().catch(console.error);
+// }, [EventCategories]);
+
+//   const fetchSuggestions = async () => {
+
+//     navigator.geolocation.getCurrentPosition(
+//       position => {
+//          setCurrLoc([position.coords.latitude,position.coords.longitude]);
+//       });
+    
+//     const { data: suggestions, error } = await supabase
+//         .from("TestReports")
+//         .select("*")
+//         .gt('LON', currLoc[1]-0.1)
+//         .lt('LON',currLoc[1]+0.1)
+//         .gt('LAT', currLoc[0]-0.1)
+//         .lt('LAT', currLoc[0]+0.1)
+//         .gt('TIME',moment(new Date()).subtract(1,'days').format('YYYY-MM-DDTHH:MM:SS') )
+//   //      .lt('TIME',moment(new Date()).format('YYYY-MM-DDTHH:MM:SS'))
+//         .order("id", { ascending: false });
+//     if (error) console.log("error", error);
+//     else setSuggestions(suggestions);
+//     console.log("suggestions****"+suggestions.map(x => x.LAT));
+// };
+
 
 
   const addReport = async () => {
@@ -135,6 +165,8 @@ useEffect(() => {
 
 
 
+
+
     return (
       <View style={styles.container}> 
       <Modal
@@ -159,7 +191,7 @@ useEffect(() => {
             <View style={styles.reportWrapper}>
                 
                 <Text style={styles.header}>Report</Text>
-                
+            
                 <Picker style={styles.picker}
                     selectedValue={selectedCategory}
                     onValueChange={(itemValue, itemIndex) =>
@@ -195,7 +227,12 @@ useEffect(() => {
                 </Picker>
                
                 {/* <TextInput placeholder="Reporter" style={styles.input}></TextInput> */}
-                
+                {/* {suggestions.length ? (suggestions.map((report) => (   
+             <Text> SUGGESTİONS CODE {report.CODE} LAT {report.LAT} LONG {report.LON}</Text>)))
+            :(  <Text style={styles.reports}>
+              You do have any reported events yet!
+              {currLoc[0]} {currLoc[1]}
+          </Text>)} */}
                 <Button title="submit" onPress={addReport} style={styles.btn} color="#662EDD"></Button>
             </View>
         }       
