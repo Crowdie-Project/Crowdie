@@ -94,7 +94,8 @@ useEffect(() => {
     fetchEvents().catch(console.error);
 },[selectedCategory,selectedType]);
 
-
+  TODO
+  SYNTAX ERROR HERE
   const fetchEvents = async () => {
     
     let { data: Events, error } = await supabase
