@@ -161,6 +161,10 @@ return (
             Time: 
             <Text style = {styles.descr}>{moment(report.TIME).format('HH:MM DD-MM-YYYY')}</Text>
         </Text>    
+        <Text style ={styles.subTitle}>
+            Count: 
+            <Text style = {styles.descr}>{report.COUNT}</Text>
+        </Text>   
         </View>
     </View>
 

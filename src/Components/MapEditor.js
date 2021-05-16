@@ -22,6 +22,8 @@ return (
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     }}
+    showsUserLocation = {true}
+    loadingEnabled = {true}
   >
      {points.map((point) => (
     <Marker
