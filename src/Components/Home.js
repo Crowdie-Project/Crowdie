@@ -198,7 +198,14 @@ const fetchSuggestions = async () => {
   console.log("suggestions****"+suggestions.map(x => x.LAT));
 };
 
-
+const confirmReport = async (id, value) => {
+  const { data: reports, error } = await supabase
+  .from("TestReports")
+  .update({ COUNT: value+1})
+  .eq("id", id)
+if (error) console.log("error", error);
+else setReports(reports);
+};
 
     return (
         <View style={styles.container}>
@@ -220,27 +227,21 @@ const fetchSuggestions = async () => {
        setSelectedCategories={setSelectedCategories}
        />
       {console.log(endDate)}
-       <View style={styles.reportWrapper}>
-                 <Text style={styles.header}>Reported Events</Text>
-                   <ScrollView style={styles.scrollview}>
-  {/* {convertedDataList.map((convertedData) =>
-   (getClusters(convertedData, clusterConfig).clusters.map((cluster) => (
-    <Text>
-   {cluster.ids.map( (id) => (
-      <Text>{"\n"}code:{reports.filter( report => report.id == id).map( report => report.CODE)}, time: {reports.filter( report => report.id == id).map( report => report.TIME)}</Text>
-   ))} 
-    </Text>
-   )))
-  )}
-     */}
-      
-      {suggestions.length ? (suggestions.map((report) => (   
-             <Text> SUGGESTİONS CODE {report.CODE} LAT {report.LAT} LONG {report.LON}</Text>)))
-            :(  <Text style={styles.reports}>
-              You do have any reported events yet!
-              {currLoc[0]} {currLoc[1]}
-          </Text>)}
-          
+      <View style={styles.reportWrapper}>
+        <ScrollView style={styles.scrollView}>
+      {suggestions.length ? (suggestions.map((report) => ( 
+     <View style={styles.suggestions}>
+                 <Text style={styles.header}>Near event</Text>
+
+       
+             <Text> CODE {report.CODE} LAT {report.LAT} LONG {report.LON}</Text>
+             <Text> confirmed by {report.COUNT} people </Text>
+             <Pressable 
+               style={styles.buttonConfirm}
+               onPress={() => confirmReport(report.id,report.COUNT)}>
+                  <Text style={styles.confirmText}>Confirm</Text>
+               </Pressable>
+{/*           
                     {reports.length ? (
                         reports.map((report) => (
                             <Text key={report.id} style={styles.reports}>
@@ -251,12 +252,24 @@ const fetchSuggestions = async () => {
                         <Text style={styles.reports}>
                             You do have any reported events yet!
                         </Text>
-                    )}
+                    )} */}
                 
-                  
-                </ScrollView>
-
-          </View>  
+     
+</View>
+          
+         ))) :( 
+    <View style={styles.empty}>
+          <Text style={styles.header}>Reported Events</Text>
+      
+           <Text style={styles.reports}>
+            You do have any reported events yet!
+            {currLoc[0]} {currLoc[1]}
+        </Text> 
+    
+</View>
+          )}
+          </ScrollView>
+          </View> 
         <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
      
       
@@ -282,18 +295,10 @@ const styles = StyleSheet.create({
       flexDirection: 'row'
     },
     reportWrapper: {
-      backgroundColor: '#fff',
       padding: 15,
       position: "absolute",
       zIndex: 9999,
-      left: 15,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 3
-      },
-      shadowOpacity: 0.5,
-      shadowRadius: 10
+      left: 15
     },
     filterContainer: {
       padding: 10,
@@ -301,12 +306,28 @@ const styles = StyleSheet.create({
       zIndex: 9999,
       right: 10
     },
-    scrollview: {
+    suggestions:{
+       padding: 10,
+       backgroundColor: "#FFF",
+       marginBottom:5,
+    },
+    empty: {
+      backgroundColor: "#fff",
+      padding: 15,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 3
+      },
+      shadowOpacity: 0.3,
+      shadowRadius: 10
+    },
+    scrollView:{
       height: 250,
       padding: 5
     },
     header: {
-      fontSize: 24,
+      fontSize: 20,
       fontWeight: 'bold',
       marginBottom: 10
     },
@@ -353,6 +374,19 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
+      },
+      buttonConfirm:{
+        backgroundColor: "#000",
+        padding: 5,
+        justifyContent: 'center',
+        width: 80,
+        marginTop: 10,
+        alignSelf: "flex-end"
+      },
+      confirmText:{
+        fontSize: 16,
+        color: "#fff",
+        textAlign: "center",
       }
   });
 
