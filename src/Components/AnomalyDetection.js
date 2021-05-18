@@ -3,14 +3,18 @@ import { Component } from 'react';
 
 export default function AnomalyDetection(data) {
   
-  var allReps = data;
   var normalReps = [];
+  var repCodes = [1201, 1202, 1203, 1204, 1301, 1302, 1303, 1304, 1401, 1402, 1403, 1501, 1502, 1503, 1504, 1505, 1601, 1602, 1603, 1701, 1702, 1703, 1801, 1802, 1803, 3101, 3301, 3302, 3303];
+  var codesHT = createCodesHTable(data);
   
+
+  Array.from(repCodes).forEach((code) => {
+
   //list of objects where objects are {"lat":number, "long":number, "t":number}
-  var formattedReps = data.map((report) =>{
+  var formattedReps = (codesHT.get(code)).map((report) =>{
     var container = {};
-    container["Lat"] = report.LAT;
-    container["Long"] = report.LON;
+    container["Lat"] = report.lat;
+    container["Long"] = report.long;
     container["t"] = convertUnixTime(report.TIME);
     return container;
   });
@@ -29,7 +33,7 @@ export default function AnomalyDetection(data) {
       for(var i = 0; i < scores.length; i++) {
         if(scores[i] < 0.5){
           console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
-          normalReps.push(allReps[i]);
+          normalReps.push((codesHT.get(code))[i]);
         }
       }
   
@@ -43,23 +47,11 @@ export default function AnomalyDetection(data) {
       for(var i = 0; i < scores.length; i++) {
         if(scores[i] < 0.5){
         console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
-        normalReps.push(allReps[i]);
+        normalReps.push((codesHT.get(code))[i]);
         }
       }
     }
-    return normalReps;
-}
-
-
-
-
-
-
-
-
-
-
-
+  });
 
 
 
@@ -76,22 +68,28 @@ function convertUnixTime(timestamptz) {
 };
 
 
-//This will be called before Anomaly detection starts. Anomaly detection will be called for each line of this table
-/* function createCodesHTable(data) {
-  var Hashtable = require('jshashtable');
-  var codesHT = new Hashtable();
+//put reports in 'data' to a hash table with keys as their codes.
+function createCodesHTable(data) {
+  var HashTable = require('simple-hashtable');
+  var codesHT = new HashTable();
 
   Array.from(data).forEach((report) => {
-    var tempArr = codesHT.get(report.CODE).push(report);
+    var tempArr;
+    //if the value with this reports code as key is empty only add this report  
+    if(codesHT.get(report.CODE) == null) {
+      tempArr.push(report);
+    //if the value with this reports code as key isn't empty append this report to that array
+    }else {
+      tempArr = codesHT.get(report.CODE).push(report);
+    }
     codesHT.put(report.CODE, tempArr);
   });
 
   return codesHT;
 
-} */
+};
 
-
-
+}
 
 /* var data = [
   {"lat":41.080386328434905,"long":28.99703979492188,"t":1619593215},
