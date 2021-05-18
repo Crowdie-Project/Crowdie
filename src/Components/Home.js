@@ -7,6 +7,7 @@ import MapEditor from './MapEditor';
 import timeSeriesClustering from 'time-series-clustering';
 import Filtering from './Filtering';
 import moment from 'moment';
+import NearEvent from './NearEvent';
 
 
 const Home = () => {
@@ -19,6 +20,9 @@ const Home = () => {
 const [startDate, setStartDate] = useState(null);
 const [endDate, setEndDate] = useState(null);
 const [selectedCategories,setSelectedCategories] = useState([]);
+
+const [suggestions, setSuggestions] = useState([]);
+const [currLoc,setCurrLoc] = useState([]);
 
 
 
@@ -47,6 +51,8 @@ const onChange = dates => {
       setFilter(selectedCategories);
      
       fetchReports().catch(console.error);
+      fetchSuggestions().catch(console.error);
+
   }, [selectedFilter,selectedCategories,startDate,endDate]);
   
     const fetchReports = async () => {
@@ -156,20 +162,18 @@ function convertTime(timestamptz) {
 
 
 
-var reportlist = reports.map((report) => {
-  var container = {};
-  container["id"] = report.id;
-  container["value"] = convertTime(report.TIME);
-  return container;
-});
+// var reportlist = reports.map((report) => {
+//   var container = {};
+//   container["id"] = report.id;
+//   container["value"] = convertTime(report.TIME);
+//   return container;
+// });
 
 
-var convertedData = {};
-convertedData["data"] = reportlist;
+// var convertedData = {};
+// convertedData["data"] = reportlist;
  
 
-const [suggestions, setSuggestions] = useState([]);
-const [currLoc,setCurrLoc] = useState([]);
 
 useEffect(() => {
  
@@ -195,16 +199,23 @@ const fetchSuggestions = async () => {
       .order("id", { ascending: false });
   if (error) console.log("error", error);
   else setSuggestions(suggestions);
-  console.log("suggestions****"+suggestions.map(x => x.LAT));
 };
 
-const confirmReport = async (id, value) => {
-  const { data: reports, error } = await supabase
-  .from("TestReports")
-  .update({ COUNT: value+1})
-  .eq("id", id)
-if (error) console.log("error", error);
-else setReports(reports);
+const confirmReport = async (id, liked) => {
+  
+   var value = 0;
+   if(liked){
+     value = -1;
+   }else{
+     value = 1;
+   }
+
+  const { data, error } = await supabase
+  .rpc('updatecount', { value_to_add: value, row_id: id})
+
+fetchReports()
+fetchSuggestions()
+
 };
 
     return (
@@ -229,33 +240,14 @@ else setReports(reports);
       {console.log(endDate)}
       <View style={styles.reportWrapper}>
         <ScrollView style={styles.scrollView}>
-      {suggestions.length ? (suggestions.map((report) => ( 
-     <View style={styles.suggestions}>
-                 <Text style={styles.header}>Near event</Text>
-
-       
-             <Text> CODE {report.CODE} LAT {report.LAT} LONG {report.LON}</Text>
-             <Text> confirmed by {report.COUNT} people </Text>
-             <Pressable 
-               style={styles.buttonConfirm}
-               onPress={() => confirmReport(report.id,report.COUNT)}>
-                  <Text style={styles.confirmText}>Confirm</Text>
-               </Pressable>
-{/*           
-                    {reports.length ? (
-                        reports.map((report) => (
-                            <Text key={report.id} style={styles.reports}>
-                              code: {report.CODE} lat: {report.LAT} lon: {report.LON}
-                            </Text>
-                        ))
-                    ) : (
-                        <Text style={styles.reports}>
-                            You do have any reported events yet!
-                        </Text>
-                    )} */}
+      {suggestions.length ? (suggestions.map((suggestion) => ( 
+     <NearEvent report={suggestion}
+     confirmReport={confirmReport}/>
+      
+    
                 
      
-</View>
+
           
          ))) :( 
     <View style={styles.empty}>
