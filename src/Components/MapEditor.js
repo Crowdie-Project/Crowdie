@@ -31,6 +31,8 @@ return (
       coordinate={[point.LAT,point.LON]}
       description={<MarkerDescription report={point}/>}
       pinColor={colors.filter(color => color.CategoryCode == point.CategoryCode).map(color => color.HexCode)[0]}
+      opacity={point.COUNT/5}
+    
     />     
     
   ))}
