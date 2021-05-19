@@ -22,7 +22,7 @@ import moment from 'moment';
 //MAIN
 //////////////////
 
-const Report = ({reports,setReports,EventCategories,setEventCategories,user,setUser}) => {
+const Report = ({reports,setReports,EventCategories,setEventCategories,user,setUser,suggestions}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedType,setType] = useState(0);
   var radio_props = [
@@ -74,11 +74,26 @@ const geoLoc = navig.getLocation();
 //     else setSuggestions(suggestions);
 //     console.log("suggestions****"+suggestions.map(x => x.LAT));
 // };
+const [sameEvents, setSameEvent] = useState([]);
+useEffect(() => {
+ 
+  checkIfExist().catch(console.error);
+}, [selectedEvent]);
 
+const checkIfExist = async () =>{
+  const { data: sameEvent, error } = await supabase
+  .from("TestReports")
+  .select("CODE")
+  .eq("CODE",selectedEvent)
+  .gt('TIME',moment(new Date()).subtract(1,'days').format('YYYY-MM-DDTHH:MM:SS') )
+  if (error) setError(error.message);
+  else setSameEvent(sameEvent);
+
+}
 
 
   const addReport = async () => {
-
+    
    //if selected item is "seçiniz", user cannot submit report.
    if (!selectedEvent){
      alert('ERROR: No report specified.');
@@ -96,6 +111,11 @@ const geoLoc = navig.getLocation();
      return;
    }
 
+   if (sameEvents && sameEvents.length){
+     alert('This incedent has already been reported, you can confirm it');
+     return;
+   }
+
     const { data: report, error } = await supabase
     .from('TestReports')
     .insert({ CODE: selectedEvent, LAT: geoLoc[1], LON: geoLoc[0], CategoryCode: selectedCategory})
@@ -106,7 +126,6 @@ const geoLoc = navig.getLocation();
         setError(null);
   
     }
-
     setSelectedCategory(null)
     setSelectedEvent(null)
     setWaiting(true)
