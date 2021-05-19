@@ -67,7 +67,7 @@ export default function AnomalyDetection(data) {
     console.log("Formatted Reps: ");
     console.log(formattedReps);
   
-      if(formattedReps.length < 10){
+      if(formattedReps.length < 1){
         console.log("Not enough reports.\n");
     
       }else if(formattedReps.length < 100){
