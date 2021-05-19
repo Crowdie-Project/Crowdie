@@ -227,6 +227,7 @@ fetchSuggestions()
            setEventCategories={setEventCategories}
            user={user}
            setUser={setUser}
+           suggestions={suggestions}
          />
   
        <Filtering 
@@ -239,6 +240,9 @@ fetchSuggestions()
        />
       {console.log(endDate)}
       <View style={styles.reportWrapper}>
+      <View style={styles.nearHeaderContainer}>
+          <Text style={styles.nearHeader}>Events Around You</Text>
+</View>
         <ScrollView style={styles.scrollView}>
       {suggestions.length ? (suggestions.map((suggestion) => ( 
      <NearEvent report={suggestion}
@@ -251,11 +255,11 @@ fetchSuggestions()
           
          ))) :( 
     <View style={styles.empty}>
-          <Text style={styles.header}>Reported Events</Text>
+    
       
            <Text style={styles.reports}>
-            You do have any reported events yet!
-            {currLoc[0]} {currLoc[1]}
+            There are no new events around you.
+       
         </Text> 
     
 </View>
@@ -315,8 +319,18 @@ const styles = StyleSheet.create({
       shadowRadius: 10
     },
     scrollView:{
-      height: 250,
+      height: 300,
       padding: 5
+    },
+    nearHeaderContainer:{
+      padding: 5,
+      backgroundColor: "purple"
+    },
+    nearHeader:{
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: "#fff",
+      textAlign: "center"
     },
     header: {
       fontSize: 20,

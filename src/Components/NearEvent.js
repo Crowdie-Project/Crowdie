@@ -37,8 +37,15 @@ const NearEvent = ({report,confirmReport}) => {
                  <Text style={styles.title}>{title.map(x=> x.Child)[0]}</Text>
 
        
-             <Text> CODE {report.CODE} LAT {report.LAT} LONG {report.LON}</Text>
-             <Text> confirmed by {report.COUNT} people </Text>
+            <View style={styles.textstyle}>
+            <Text>Coordinates {report.LAT} , {report.LON}</Text>
+            </View>
+            <View style={styles.textstyle}>
+                <Text>Reported at {moment(report.TIME).format('HH:MM DD-MM-YYYY')}</Text>
+            </View>
+            <View style={styles.textstyle}>
+            <Text>Confirmed by {report.COUNT} people </Text>
+            </View>
              <Pressable 
              style={styles.buttonConfirm}
                onPress={() => likefunction(report.id)}>
@@ -65,16 +72,19 @@ const NearEvent = ({report,confirmReport}) => {
           },
      title: {
         fontSize: 18,
-        color: '#84131f',
+        color: 'green',
         fontWeight: 'bold',
         marginBottom: 5,
         flex: 1
      },
      suggestions:{
-        padding: 10,
+        padding: 15,
         backgroundColor: "#FFF",
         marginBottom:5,
      },
+     textstyle:{
+         marginBottom: 5
+     }
     });
     
     export default NearEvent;
