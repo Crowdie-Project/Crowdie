@@ -3,7 +3,7 @@ import { Component } from 'react';
 
 export default function AnomalyDetection(data) {
   
-  var data = [
+ /*  var data = [
     {"CODE": 1201, "ID": 12931283, "lat":41.080386328434905,"long":28.99703979492188,"t":1619593215},
     {"CODE": 1202, "ID": 12937283, "lat":41.076633727112515,"long":28.997554779052738,"t":1619593244},
     {"CODE": 1203, "ID": 15587283, "lat":41.077539547047294,"long":29.003305435180668,"t":1619593341},
@@ -46,7 +46,7 @@ export default function AnomalyDetection(data) {
     {"CODE": 1301, "ID": 88877425, "lat":40.85345406047822,"long":27.99180787250977,"t":1611001457},
     {"CODE": 1301, "ID": 77844237, "lat":40.99341406047111,"long":27.99180787257864,"t":1611001111}, 
   ];
-  
+   */
     var normalReps = [];
     var repCodes = [1201, 1202, 1203, 1204, 1301, 1302, 1303, 1304, 1401, 1402, 1403, 1501, 1502, 1503, 1504, 1505, 1601, 1602, 1603, 1701, 1702, 1703, 1801, 1802, 1803, 3101, 3301, 3302, 3303, 11201, 11202, 11203, 11204, 11301, 11302, 11303, 11304, 11401, 11402, 11403, 11503, 11504, 11505, 11601, 11602, 11603, 11701, 11702, 11703, 11801, 11802, 11803, 2200, 2300, 2400, 2500, 2601, 2602, 2700, 2801, 2802, 12200, 12300, 12400, 12500, 12601, 12602, 12700, 12801, 12802, 13101, 13201, 13202, 13203, 13301, 13302, 13303];
     var codesHM = createCodesHMap(data);
@@ -58,9 +58,9 @@ export default function AnomalyDetection(data) {
     //list of objects where objects are {"lat":number, "long":number, "t":number}
     var formattedReps = codesHM[code].map((report) =>{
       var container = {};
-      container["Lat"] = report.lat;              //Change "lat" to "LAT"
-      container["Long"] = report.long;            //Change "long" to "LON"
-      container["t"] = convertUnixTime(report.t); //Change "t" to "TIME"
+      container["Lat"] = report.LAT;              //Change "lat" to "LAT"
+      container["Long"] = report.LON;            //Change "long" to "LON"
+      container["t"] = convertUnixTime(report.TIME); //Change "t" to "TIME"
       return container;
     });
     
@@ -105,33 +105,36 @@ export default function AnomalyDetection(data) {
   
   
   
-  function convertUnixTime(timestamptz) {
-    var t = timestamptz.indexOf("T")
-    var date = timestamptz.substring(0,t+9)+"Z"
-    var d = new Date(date);
-    var myEpoch = d.getTime()/1000;
-    //console.log(date)
-    //console.log(myEpoch)
-    return myEpoch;
-  };
   
-  
-  //put reports in 'data' to a hash table with keys as their codes.
-  function createCodesHMap(data) {
-    var codesHM = {};
-  
-    Array.from(repCodes).forEach((code) => {
-      codesHM[code] = [];
-    });
-  
-    Array.from(data).forEach((report) => {
-      var tempArr = codesHM[report.CODE];
-      tempArr.push(report);   
-      codesHM[report.CODE] = tempArr;
-    });
-  
-    return codesHM;
-  
-  };
+
+  return normalReps;
 }
 
+function convertUnixTime(timestamptz) {
+  var t = timestamptz.indexOf("T")
+  var date = timestamptz.substring(0,t+9)+"Z"
+  var d = new Date(date);
+  var myEpoch = d.getTime()/1000;
+  //console.log(date)
+  //console.log(myEpoch)
+  return myEpoch;
+};
+
+
+//put reports in 'data' to a hash table with keys as their codes.
+function createCodesHMap(data) {
+  var codesHM = {};
+
+  Array.from(repCodes).forEach((code) => {
+    codesHM[code] = [];
+  });
+
+  Array.from(data).forEach((report) => {
+    var tempArr = codesHM[report.CODE];
+    tempArr.push(report);   
+    codesHM[report.CODE] = tempArr;
+  });
+
+  return codesHM;
+
+};
