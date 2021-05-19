@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategories,setSelectedCategories}) => {
 
@@ -97,6 +98,11 @@ const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategorie
           style={[styles.button, styles.buttonOpen]}
           onPress={() => setModalVisible(true)}
         >
+           <MaterialCommunityIcons
+        name={"filter"}
+        size={28}
+        color={"black"}
+      />
           <Text style={styles.textStyle}>Filter</Text>
         </Pressable>
       </View>
@@ -172,7 +178,7 @@ const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategorie
     },
     buttonOpen: {
       backgroundColor: "#fff",
-      padding: 20,
+      padding: 10,
       justifyContent: 'center',
       shadowColor: "#000",
       shadowOffset: {
@@ -180,7 +186,8 @@ const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategorie
         height: 3
       },
       shadowOpacity: 0.5,
-      shadowRadius: 10
+      shadowRadius: 10,
+      flexDirection: "row"
     },
     buttonClose: {
       alignSelf: "flex-end",
@@ -196,6 +203,7 @@ const Filtering = ({startDate,endDate,onChange,eventCategories,selectedCategorie
       color: "#000",
       fontWeight: "bold",
       textAlign: "center",
+      alignSelf: "center",
       fontSize: 18
     },
     modalText: {
