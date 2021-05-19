@@ -7,10 +7,19 @@ import MarkerDescription from "./MarkerDescription";
 //Navig instance for geolocation
 const navig = new Navig();
 //Geolocation array => [longitude, latitude, timestamp]
-const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button
-           
+const geoLoc = navig.getLocation();    //Location doesn't update until user clicks to allow location services button
+          
+const currLoc = [0,0];
+
+navigator.geolocation.getCurrentPosition(
+  position => {
+    currLoc[0] = position.coords.latitude;
+    currLoc[1] = position.coords.longitude;
+  });
+
 const MapEditor = ({points,colors,filter}) => {
-        
+  
+
 return (
   
   <MapView
@@ -36,6 +45,9 @@ return (
     />     
     
   ))}
+  <Marker 
+    coordinate={[currLoc[0],currLoc[1]]}
+    />
   </MapView>
 
 );
