@@ -3,10 +3,14 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text,Pressable, Button } from 'react-native';
 import timeSeriesClustering from 'time-series-clustering';
 import moment from 'moment';
+
 import {readString} from 'react-papaparse';
+
 
 //LOCAL IMPORTS
 import {supabase} from './Supabase.js';
+import {RECHandler} from './RECHandler.js';
+
 import Report from './Report';
 import MapEditor from './MapEditor';
 import Timeline from './Timeline';
@@ -60,13 +64,19 @@ const onChange = dates => {
       }
       let { data: reports, error } = await supabase
           .from("TestReports")
+          //.from("TestReports2")
           .select("*")
           .in('CategoryCode', selectedFilter)
           .gt('TIME',moment(filterStart).format('YYYY-MM-DDTHH:MM:SS') )
           .lt('TIME',moment(filterEnd).format('YYYY-MM-DDTHH:MM:SS'))
           .order("id", { ascending: false });
       if (error) console.log("error", error);
-      else setReports(reports);
+      else{
+        console.log("Using TestReports instead of TestReports2!");
+        console.log("Remember to later switch to the new database for accomodating the new table!");
+        //console.log("Using TestReports2 instead of TestReports!");
+        setReports(reports);
+      }
   };
   
   //TODO MIGRATE
@@ -75,19 +85,23 @@ const onChange = dates => {
     //fetchSomeMore().catch(console.error);
   },[]);
   
-  const fetchMainCategories = async () => {
+  //2nd Version
+  /*const fetchMainCategories = async () => {
     let { data: EventCategories, error } = await fetch(cats)
     .then(r => r.text())
     .then(csv => readString(csv,{header:true}))
       if (error)console.log("error", error);
       else{
+        console.log("HMMM");
+        console.log(EventCategories);
         setEventCategories(EventCategories);
         //console.log("CATS!");
         //console.log(EventCategories);
       }
-  }
+  }*/
 
-  /*const fetchMainCategoriesLegacy = async () => {
+  //1st Version
+  const fetchMainCategories = async () => {
       
     let { data: EventCategories, error } = await supabase
           .from('EventCategories')
@@ -97,12 +111,12 @@ const onChange = dates => {
           if (error)console.log("error", error);
           else{
             setEventCategories(EventCategories);
-            //console.log("CATS!");
-            //console.log(EventCategories);
+            console.log("CATS!");
+            console.log(EventCategories);
           }
   };
 
-  const fetchSomeMore = async () => {
+  /*const fetchSomeMore = async () => {
     fetch(cats)
     .then(r => r.text())
     .then(csv => readString(csv,{header:true}))
@@ -110,13 +124,19 @@ const onChange = dates => {
       console.log('csv decoded:', c);
   },[]);
   }*/
+
+  console.log("SPECIAL DELIVERY!");
+  console.log(RECHandler.listAllCategories());
   
   useEffect(() => {
     fetchCategoryColors().catch(console.error);
   },[]);
 
+  /*LEGACY
+  */
 
-  const fetchCategoryColors = async () => {
+  //2nd Version
+  /*const fetchCategoryColors = async () => {
     let { data: Colors, error } = await fetch(ccolors)
     .then(r => r.text())
     .then(csv => readString(csv,{header:true}))
@@ -124,9 +144,10 @@ const onChange = dates => {
       else setColors(Colors);
       let defaultFilter = Colors.map((color) => color.CategoryCode);  
       setFilter(defaultFilter);
-  }
+  }*/
   
-  /*const fetchCategoryColorsLegacy = async () => {
+  //1st Version
+  const fetchCategoryColors = async () => {
       
     let { data: Colors, error } = await supabase
           .from('ColorCodes')
@@ -135,7 +156,9 @@ const onChange = dates => {
           else setColors(Colors);
         let defaultFilter = Colors.map((color) => color.CategoryCode)  
         setFilter(defaultFilter)
-  };*/
+  };
+
+  //LEGACY END
 
   const filterSelected = (newFilter) => {
     if (selectedFilter == newFilter){
