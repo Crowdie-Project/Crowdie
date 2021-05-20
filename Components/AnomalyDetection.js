@@ -106,9 +106,8 @@ export default function AnomalyDetection(data) {
   
     console.log("Normal Reps: ");
     console.log(normalReps);
-  
-  
-  
+
+    
   
 
   return normalReps;
@@ -137,12 +136,15 @@ function createCodesHMap(data) {
     var tempArr = codesHM[report.CODE];
     tempArr.push(report);   
     //console.log(report);
-    //console.log("LET'S SEE");
+    console.log("LET'S SEE");
+    console.log(tempArr[0]);
     //console.log(tempArr);
 
     codesHM[report.CODE] = tempArr;
   });
 
+  console.log("FINAL");
+  console.log(codesHM);
   return codesHM;
 
 };
