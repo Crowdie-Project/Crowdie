@@ -14,11 +14,8 @@ import {RECHandler} from './RECHandler.js';
 import Report from './Report';
 import MapEditor from './MapEditor';
 
-import Timeline from './Timeline';
-
-import timeSeriesClustering from 'time-series-clustering';
+//import Timeline from './Timeline';
 import Filtering from './Filtering';
-import moment from 'moment';
 import NearEvent from './NearEvent';
 
 
@@ -325,19 +322,17 @@ fetchSuggestions()
       {suggestions.length ? (suggestions.map((suggestion) => ( 
      <NearEvent report={suggestion}
      confirmReport={confirmReport}/>
-                    {reports.length ? (
-                        reports.map((report) => (
-                            <Text key={report.id} style={styles.reports}>
-                              code: {report.CODE} lat: {report.LAT} lon: {report.LON}
-                            </Text>
-                        ))
-                    ) : (
-                        <Text style={styles.reports}>
-                            No news yet!
-                        </Text>
-                    )}
-
-          
+          /*{reports.length ? (
+              reports.map((report) => (
+                  <Text key={report.id} style={styles.reports}>
+                    code: {report.CODE} lat: {report.LAT} lon: {report.LON}
+                  </Text>
+              ))
+          ) : (
+              <Text style={styles.reports}>
+                  No news yet!
+              </Text>
+          )}*/
          ))) :( 
     <View style={styles.empty}>
     
