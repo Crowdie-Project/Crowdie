@@ -1,6 +1,9 @@
 import { IsolationForest } from 'isolation-forest'
 import { Component } from 'react';
 
+//TODO: EVENTUALLY REPLACE!
+const repCodes = [1201, 1202, 1203, 1204, 1301, 1302, 1303, 1304, 1401, 1402, 1403, 1501, 1502, 1503, 1504, 1505, 1601, 1602, 1603, 1701, 1702, 1703, 1801, 1802, 1803, 3101, 3301, 3302, 3303, 11201, 11202, 11203, 11204, 11301, 11302, 11303, 11304, 11401, 11402, 11403, 11503, 11504, 11505, 11601, 11602, 11603, 11701, 11702, 11703, 11801, 11802, 11803, 2200, 2300, 2400, 2500, 2601, 2602, 2700, 2801, 2802, 12200, 12300, 12400, 12500, 12601, 12602, 12700, 12801, 12802, 13101, 13201, 13202, 13203, 13301, 13302, 13303];
+
 export default function AnomalyDetection(data) {
   
  /*  var data = [
@@ -47,9 +50,10 @@ export default function AnomalyDetection(data) {
     {"CODE": 1301, "ID": 77844237, "lat":40.99341406047111,"long":27.99180787257864,"t":2021-04-24T14:02:44+00:00}, 
   ];
    */
-    var normalReps = [];
-    var repCodes = [1201, 1202, 1203, 1204, 1301, 1302, 1303, 1304, 1401, 1402, 1403, 1501, 1502, 1503, 1504, 1505, 1601, 1602, 1603, 1701, 1702, 1703, 1801, 1802, 1803, 3101, 3301, 3302, 3303, 11201, 11202, 11203, 11204, 11301, 11302, 11303, 11304, 11401, 11402, 11403, 11503, 11504, 11505, 11601, 11602, 11603, 11701, 11702, 11703, 11801, 11802, 11803, 2200, 2300, 2400, 2500, 2601, 2602, 2700, 2801, 2802, 12200, 12300, 12400, 12500, 12601, 12602, 12700, 12801, 12802, 13101, 13201, 13202, 13203, 13301, 13302, 13303];
-    var codesHM = createCodesHMap(data);
+    let normalReps = [];
+    let codesHM = createCodesHMap(data);
+
+    console.log(repCodes);
     
     Array.from(repCodes).forEach((code) => {
   
@@ -132,6 +136,10 @@ function createCodesHMap(data) {
   Array.from(data).forEach((report) => {
     var tempArr = codesHM[report.CODE];
     tempArr.push(report);   
+    //console.log(report);
+    //console.log("LET'S SEE");
+    //console.log(tempArr);
+
     codesHM[report.CODE] = tempArr;
   });
 
