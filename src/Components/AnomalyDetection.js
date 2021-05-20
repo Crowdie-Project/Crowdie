@@ -51,8 +51,6 @@ export default function AnomalyDetection(data) {
     var repCodes = [1201, 1202, 1203, 1204, 1301, 1302, 1303, 1304, 1401, 1402, 1403, 1501, 1502, 1503, 1504, 1505, 1601, 1602, 1603, 1701, 1702, 1703, 1801, 1802, 1803, 3101, 3301, 3302, 3303, 11201, 11202, 11203, 11204, 11301, 11302, 11303, 11304, 11401, 11402, 11403, 11503, 11504, 11505, 11601, 11602, 11603, 11701, 11702, 11703, 11801, 11802, 11803, 2200, 2300, 2400, 2500, 2601, 2602, 2700, 2801, 2802, 12200, 12300, 12400, 12500, 12601, 12602, 12700, 12801, 12802, 13101, 13201, 13202, 13203, 13301, 13302, 13303];
     var codesHM = createCodesHMap(data);
     
-    console.log("Codes HashMap: ");
-    console.log(codesHM);
     Array.from(repCodes).forEach((code) => {
   
     //list of objects where objects are {"lat":number, "long":number, "t":number}
@@ -64,8 +62,6 @@ export default function AnomalyDetection(data) {
       return container;
     });
     
-    console.log("Formatted Reps: ");
-    console.log(formattedReps);
   
       if(formattedReps.length < 1){
         console.log("Not enough reports.\n");
@@ -99,6 +95,10 @@ export default function AnomalyDetection(data) {
         }
       }
     });
+  
+
+    console.log("All the Reps: ");
+    console.log(codesHM);
   
     console.log("Normal Reps: ");
     console.log(normalReps);
