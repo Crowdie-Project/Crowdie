@@ -1,0 +1,11 @@
+CategoryCode,CategoryName,HexCode,ColorName
+1200,Generic Infrastructure Problem,#002ABF,dark blue
+1300,Generic Traffic and Transportation Problem,#00EB96,cyan
+1400,Natural Disaster,#0C9600,dark green
+1500,Generic Urban Problem,#FAFF00,yellow
+1600,Generic Environmental Problem,#00B2FF,blue
+1700,Generic Health Problem,#FFA800,orange
+1800,Extraordinary Circumstances,#EB6300,dark orange
+3100,Spontaneous Social Events,#EB00F0,purple
+3200,One-day Social Events,#9200D7,dark purple
+3300,Daily Social Events,#EB0055,dark pink

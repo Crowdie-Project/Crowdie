@@ -26,8 +26,8 @@ const Report = ({reports,setReports,EventCategories,setEventCategories,user,setU
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedType,setType] = useState(0);
   var radio_props = [
-    {label: 'sorun', value: 0 },
-    {label: 'çözüm', value: 1 }
+    {label: 'Problem', value: 0 },
+    {label: 'Solution', value: 1 }
   ];
   
 //Navig instance for geolocation

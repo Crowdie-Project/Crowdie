@@ -1,14 +1,30 @@
-//REACT IMPORTS
+//LIBRARY IMPORTS
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text,Pressable, Button } from 'react-native';
-import Report from './Report';
+import timeSeriesClustering from 'time-series-clustering';
+import moment from 'moment';
+
+import {readString} from 'react-papaparse';
+
+
+//LOCAL IMPORTS
 import {supabase} from './Supabase.js';
+import {RECHandler} from './RECHandler.js';
+
+import Report from './Report';
 import MapEditor from './MapEditor';
+
+import Timeline from './Timeline';
+
 import timeSeriesClustering from 'time-series-clustering';
 import Filtering from './Filtering';
 import moment from 'moment';
 import NearEvent from './NearEvent';
 
+
+//ADDITIONAL DATA
+import cats from '../reportCodes/categories.csv';
+import ccolors from '../reportCodes/code-colors.csv';
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -70,20 +86,43 @@ const onChange = dates => {
       
       let { data: reports, error } = await supabase
           .from("TestReports")
+          //.from("TestReports2")
           .select("*")
           .in('CategoryCode',filterCategory)
           .gt('TIME',moment(filterStart).format('YYYY-MM-DDTHH:MM:SS') )
           .lt('TIME',moment(filterEnd).format('YYYY-MM-DDTHH:MM:SS'))
           .order("id", { ascending: false });
       if (error) console.log("error", error);
-      else setReports(reports);
+      else{
+        console.log("Using TestReports instead of TestReports2!");
+        console.log("Remember to later switch to the new database for accomodating the new table!");
+        //console.log("Using TestReports2 instead of TestReports!");
+        setReports(reports);
+      }
   };
   
-  
+  //TODO MIGRATE
   useEffect(() => {
     fetchMainCategories().catch(console.error);
+    //fetchSomeMore().catch(console.error);
   },[]);
   
+  //2nd Version
+  /*const fetchMainCategories = async () => {
+    let { data: EventCategories, error } = await fetch(cats)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+      if (error)console.log("error", error);
+      else{
+        console.log("HMMM");
+        console.log(EventCategories);
+        setEventCategories(EventCategories);
+        //console.log("CATS!");
+        //console.log(EventCategories);
+      }
+  }*/
+
+  //1st Version
   const fetchMainCategories = async () => {
       
     let { data: EventCategories, error } = await supabase
@@ -91,14 +130,45 @@ const onChange = dates => {
           .select("*")
           // Filters
           .eq('ParentCode', '0')
-          if (error) console.log("error", error);
-          else setEventCategories(EventCategories);
+          if (error)console.log("error", error);
+          else{
+            setEventCategories(EventCategories);
+            console.log("CATS!");
+            console.log(EventCategories);
+          }
   };
+
+  /*const fetchSomeMore = async () => {
+    fetch(cats)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+    .then(c => {
+      console.log('csv decoded:', c);
+  },[]);
+  }*/
+
+  console.log("SPECIAL DELIVERY!");
+  console.log(RECHandler.listAllCategories());
   
   useEffect(() => {
     fetchCategoryColors().catch(console.error);
   },[]);
+
+  /*LEGACY
+  */
+
+  //2nd Version
+  /*const fetchCategoryColors = async () => {
+    let { data: Colors, error } = await fetch(ccolors)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+      if (error)console.log("error", error);
+      else setColors(Colors);
+      let defaultFilter = Colors.map((color) => color.CategoryCode);  
+      setFilter(defaultFilter);
+  }*/
   
+  //1st Version
   const fetchCategoryColors = async () => {
       
     let { data: Colors, error } = await supabase
@@ -109,9 +179,17 @@ const onChange = dates => {
         let defaultFilter = Colors.map((color) => color.CategoryCode)  
         setFilter(defaultFilter)
   };
-  
 
 
+  //LEGACY END
+
+  const filterSelected = (newFilter) => {
+    if (selectedFilter == newFilter){
+      setFilter(Colors.map((color) => color.CategoryCode))
+    }else{
+      setFilter([newFilter])
+    }
+  }
 
   const handleLogout = async () => {
     supabase.auth.signOut().catch(console.error);
@@ -247,10 +325,17 @@ fetchSuggestions()
       {suggestions.length ? (suggestions.map((suggestion) => ( 
      <NearEvent report={suggestion}
      confirmReport={confirmReport}/>
-      
-    
-                
-     
+                    {reports.length ? (
+                        reports.map((report) => (
+                            <Text key={report.id} style={styles.reports}>
+                              code: {report.CODE} lat: {report.LAT} lon: {report.LON}
+                            </Text>
+                        ))
+                    ) : (
+                        <Text style={styles.reports}>
+                            No news yet!
+                        </Text>
+                    )}
 
           
          ))) :( 
