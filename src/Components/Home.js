@@ -95,6 +95,7 @@ const onChange = dates => {
         console.log("Using TestReports instead of TestReports2!");
         console.log("Remember to later switch to the new database for accomodating the new table!");
         //console.log("Using TestReports2 instead of TestReports!");
+        console.log(reports)
         setReports(reports);
       }
   };
@@ -292,10 +293,10 @@ fetchReports()
 fetchSuggestions()
 
 };
-
+normalReports = AnomalyDetection(reports);
     return (
         <View style={styles.container}>
-          {normalReports = AnomalyDetection(reports)}
+     
       <Report
            reports={reports}
            setReports={setReports}
@@ -336,13 +337,13 @@ fetchSuggestions()
           )}*/
          ))) :( 
     <View style={styles.empty}>
-         /*           {reports.length ? (
+                    {/* {reports.length ? (
                         reports.map((report) => (
                             <Text key={report.id} style={styles.reports}>
                               code: {report.CODE} lat: {report.LAT} lon: {report.LON}
                             </Text>
                         ))
-                    ) : ( */
+                    ) : (  */}
 
            <Text style={styles.reports}>
             There are no new events around you.
@@ -353,8 +354,8 @@ fetchSuggestions()
           )}
           </ScrollView>
           </View>
-        /* <MapEditor points={normalReports} colors={Colors} filter={selectedFilter}/>   */
-        <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
+       {/* <MapEditor points={normalReports} colors={Colors} filter={selectedFilter}/>   */}
+        <MapEditor points={normalReports} colors={Colors} filter={selectedFilter}/>   
       
      {!user ? <View/> :
       <View style={styles.logoutContainer}>
