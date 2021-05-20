@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text,Pressable, Button } from 'react-native';
 import timeSeriesClustering from 'time-series-clustering';
 import moment from 'moment';
+import AnomalyDetection from './AnomalyDetection';
 
 import {readString} from 'react-papaparse';
 
@@ -236,6 +237,7 @@ function convertTime(timestamptz) {
 // });
 
 
+var normalReports = [];
 
 // var reportlist = reports.map((report) => {
 //   var container = {};
@@ -247,8 +249,6 @@ function convertTime(timestamptz) {
 
 // var convertedData = {};
 // convertedData["data"] = reportlist;
- 
-
 
 useEffect(() => {
  
@@ -295,6 +295,7 @@ fetchSuggestions()
 
     return (
         <View style={styles.container}>
+          {normalReports = AnomalyDetection(reports)}
       <Report
            reports={reports}
            setReports={setReports}
@@ -335,8 +336,14 @@ fetchSuggestions()
           )}*/
          ))) :( 
     <View style={styles.empty}>
-    
-      
+         /*           {reports.length ? (
+                        reports.map((report) => (
+                            <Text key={report.id} style={styles.reports}>
+                              code: {report.CODE} lat: {report.LAT} lon: {report.LON}
+                            </Text>
+                        ))
+                    ) : ( */
+
            <Text style={styles.reports}>
             There are no new events around you.
        
@@ -345,9 +352,9 @@ fetchSuggestions()
 </View>
           )}
           </ScrollView>
-          </View> 
+          </View>
+        /* <MapEditor points={normalReports} colors={Colors} filter={selectedFilter}/>   */
         <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
-     
       
      {!user ? <View/> :
       <View style={styles.logoutContainer}>
