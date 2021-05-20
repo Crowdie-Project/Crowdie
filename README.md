@@ -11,8 +11,6 @@ Todo: Add info
 ## Installing libraries:
 
 >React Native Maps:
->
->*npm install react-native-maps --save-exact*
 
 
 ![image](https://user-images.githubusercontent.com/43265579/113306987-0851be00-92db-11eb-9861-dd0cc0203675.png)
@@ -21,6 +19,7 @@ Todo: Add info
 
 run with
 
+> expo install
 > expo start
 
 inside the `src/` directory.
