@@ -19,7 +19,9 @@ Todo: Add info
 
 run with
 
+> 
 > expo install
+> 
 > expo start
 
 inside the `src/` directory.
