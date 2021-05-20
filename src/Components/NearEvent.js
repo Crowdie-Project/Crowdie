@@ -49,6 +49,7 @@ const NearEvent = ({report,confirmReport}) => {
              <Pressable 
              style={styles.buttonConfirm}
                onPress={() => likefunction(report.id)}>
+                 <Text style={styles.buttonTextStyle}>Re-port</Text>
                   <MaterialCommunityIcons
         name={liked ? "star-circle" : "star-circle-outline"}
         size={32}
@@ -63,7 +64,8 @@ const NearEvent = ({report,confirmReport}) => {
     const styles = StyleSheet.create({
         buttonConfirm:{
             marginTop: 10,
-            alignSelf: "flex-end"
+            alignSelf: "flex-end",
+            flexDirection: "row"
           },
           confirmText:{
             fontSize: 16,
@@ -84,7 +86,15 @@ const NearEvent = ({report,confirmReport}) => {
      },
      textstyle:{
          marginBottom: 5
-     }
+     },
+     buttonTextStyle: {
+      color: "#555555",
+      fontWeight: "bold",
+      textAlign: "center",
+      alignSelf: "center",
+      fontSize: 16,
+      marginEnd: 5
+    },
     });
     
     export default NearEvent;

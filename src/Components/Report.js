@@ -25,9 +25,12 @@ import moment from 'moment';
 const Report = ({reports,setReports,EventCategories,setEventCategories,user,setUser,suggestions}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedType,setType] = useState(0);
+  // var radio_props = [
+  //   {label: 'Problem', value: 0 },
+  //   {label: 'Solution', value: 1 }
+  // ];
   var radio_props = [
-    {label: 'Problem', value: 0 },
-    {label: 'Solution', value: 1 }
+    {label: 'Problem', value: 0 }
   ];
   
 //Navig instance for geolocation
