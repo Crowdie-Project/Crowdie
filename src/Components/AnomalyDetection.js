@@ -79,7 +79,7 @@ export default function AnomalyDetection(data) {
     
         for(var i = 0; i < scores.length; i++) {
           if(scores[i] < 0.5){
-            console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
+            //console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
             normalReps.push((codesHM[code])[i]);
           }
         }
@@ -93,7 +93,7 @@ export default function AnomalyDetection(data) {
     
         for(var i = 0; i < scores.length; i++) {
           if(scores[i] < 0.5){
-          console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
+          //console.log("Report:" + normalReps[i] + " Score: " + scores[i] +"\n");
           normalReps.push((codesHM[code])[i]);
           }
         }
@@ -101,11 +101,11 @@ export default function AnomalyDetection(data) {
     });
   
 
-    console.log("All the Reps: ");
-    console.log(codesHM);
+    //console.log("All the Reps: ");
+    //console.log(codesHM);
   
-    console.log("Normal Reps: ");
-    console.log(normalReps);
+    //console.log("Normal Reps: ");
+    //console.log(normalReps);
 
 
   
@@ -134,10 +134,10 @@ function createCodesHMap(data) {
 
   Array.from(data).forEach((report) => {
     var tempArr = codesHM[report.CODE];
-    console.log("LET'S SEE");
-    console.log(report.CODE);
-    console.log(tempArr);
-    console.log(codesHM);
+    //console.log("LET'S SEE");
+    //console.log(report.CODE);
+    //console.log(tempArr);
+    //console.log(codesHM);
     tempArr.push(report);   
     //console.log(report);
     //console.log(tempArr);
@@ -145,8 +145,8 @@ function createCodesHMap(data) {
     codesHM[report.CODE] = tempArr;
   });
 
-  console.log("FINAL");
-  console.log(codesHM);
+  //console.log("FINAL");
+  //console.log(codesHM);
   return codesHM;
 
 };
