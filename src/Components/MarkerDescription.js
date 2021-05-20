@@ -1,7 +1,7 @@
 //REACT IMPORTS
 import React, { useEffect, useRef, useState} from 'react';
 import {View, Text,TextInput, Button, StyleSheet, requireNativeComponent, TouchableNativeFeedback, Dimensions} from 'react-native';
-
+import moment from 'moment';
            
 const MarkerDescription = ({report}) => {
     
@@ -46,12 +46,13 @@ switch(report.CODE) {
         reportCode = "Flood";
     break;
     case 1402:
-        reportCat = "Generic Infrastructure Problem";
+        reportCat = "Natural Disaster";
         reportCode = "Storm";
     break;
     case 1403:
-        reportCat = "Generic Infrastructure Problem";
+        reportCat = "Natural Disaster";
         reportCode = "Earthquake";
+    break;
     case 1501:
         reportCat = "Generic Urban Problem";
         reportCode = "Sudden Bang";
@@ -158,8 +159,13 @@ return (
         </Text>
         <Text style ={styles.subTitle}>
             Time: 
-            <Text style = {styles.descr}>{report.TIME}</Text>
+            <Text style = {styles.descr}>{moment(report.TIME).format('HH:MM DD-MM-YYYY')}</Text>
         </Text>    
+        <Text style ={styles.subTitle}>
+            Reported by
+            <Text style = {styles.descr}> {report.COUNT} </Text>
+            people
+        </Text>   
         </View>
     </View>
 

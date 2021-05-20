@@ -16,13 +16,13 @@ import {supabase} from './Supabase.js';
 
 //MODULE IMPORTS
 import Navig from "./Nav";
-
+import moment from 'moment';
 
 //////////////////
 //MAIN
 //////////////////
 
-const Report = ({reports,setReports,EventCategories,setEventCategories,user,setUser}) => {
+const Report = ({reports,setReports,EventCategories,setEventCategories,user,setUser,suggestions}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedType,setType] = useState(0);
   var radio_props = [
@@ -34,8 +34,7 @@ const Report = ({reports,setReports,EventCategories,setEventCategories,user,setU
 const navig = new Navig();
 //Geolocation array => [longitude, latitude, timestamp]
 //local timestamp is ignored in favor of serverside timestamp
-const geoLoc = navig.getLocation();                                        //Location doesn't update until user clicks to allow location services button           
-
+const geoLoc = navig.getLocation();
 
   const [errorText, setError] = useState("");
 
@@ -46,9 +45,55 @@ const geoLoc = navig.getLocation();                                        //Loc
   const [waiting, setWaiting] = useState();
   //const eventTypes = {"doğal afetler": "101", "yangın": "102", "sosyal anket":"103"};
 
+//   const [suggestions, setSuggestions] = useState([]);
+//   const [currLoc,setCurrLoc] = useState([]);
+  
+//   useEffect(() => {
+   
+//     fetchSuggestions().catch(console.error);
+// }, [EventCategories]);
+
+//   const fetchSuggestions = async () => {
+
+//     navigator.geolocation.getCurrentPosition(
+//       position => {
+//          setCurrLoc([position.coords.latitude,position.coords.longitude]);
+//       });
+    
+//     const { data: suggestions, error } = await supabase
+//         .from("TestReports")
+//         .select("*")
+//         .gt('LON', currLoc[1]-0.1)
+//         .lt('LON',currLoc[1]+0.1)
+//         .gt('LAT', currLoc[0]-0.1)
+//         .lt('LAT', currLoc[0]+0.1)
+//         .gt('TIME',moment(new Date()).subtract(1,'days').format('YYYY-MM-DDTHH:MM:SS') )
+//   //      .lt('TIME',moment(new Date()).format('YYYY-MM-DDTHH:MM:SS'))
+//         .order("id", { ascending: false });
+//     if (error) console.log("error", error);
+//     else setSuggestions(suggestions);
+//     console.log("suggestions****"+suggestions.map(x => x.LAT));
+// };
+const [sameEvents, setSameEvent] = useState([]);
+useEffect(() => {
+ 
+  checkIfExist().catch(console.error);
+}, [selectedEvent]);
+
+const checkIfExist = async () =>{
+  const { data: sameEvent, error } = await supabase
+  .from("TestReports")
+  .select("CODE")
+  .eq("CODE",selectedEvent)
+  .gt('TIME',moment(new Date()).subtract(1,'days').format('YYYY-MM-DDTHH:MM:SS') )
+  if (error) setError(error.message);
+  else setSameEvent(sameEvent);
+
+}
+
 
   const addReport = async () => {
-
+    
    //if selected item is "seçiniz", user cannot submit report.
    if (!selectedEvent){
      alert('ERROR: No report specified.');
@@ -66,6 +111,11 @@ const geoLoc = navig.getLocation();                                        //Loc
      return;
    }
 
+   if (sameEvents && sameEvents.length){
+     alert('This incedent has already been reported, you can confirm it');
+     return;
+   }
+
     const { data: report, error } = await supabase
     .from('TestReports')
     .insert({ CODE: selectedEvent, LAT: geoLoc[1], LON: geoLoc[0], CategoryCode: selectedCategory})
@@ -76,7 +126,6 @@ const geoLoc = navig.getLocation();                                        //Loc
         setError(null);
   
     }
-
     setSelectedCategory(null)
     setSelectedEvent(null)
     setWaiting(true)
@@ -135,6 +184,8 @@ useEffect(() => {
 
 
 
+
+
     return (
       <View style={styles.container}> 
       <Modal
@@ -159,7 +210,7 @@ useEffect(() => {
             <View style={styles.reportWrapper}>
                 
                 <Text style={styles.header}>Report</Text>
-                
+            
                 <Picker style={styles.picker}
                     selectedValue={selectedCategory}
                     onValueChange={(itemValue, itemIndex) =>
@@ -195,7 +246,12 @@ useEffect(() => {
                 </Picker>
                
                 {/* <TextInput placeholder="Reporter" style={styles.input}></TextInput> */}
-                
+                {/* {suggestions.length ? (suggestions.map((report) => (   
+             <Text> SUGGESTİONS CODE {report.CODE} LAT {report.LAT} LONG {report.LON}</Text>)))
+            :(  <Text style={styles.reports}>
+              You do have any reported events yet!
+              {currLoc[0]} {currLoc[1]}
+          </Text>)} */}
                 <Button title="submit" onPress={addReport} style={styles.btn} color="#662EDD"></Button>
             </View>
         }       
