@@ -40,7 +40,12 @@ class Navig extends Component {
     console.log("Latitude is :", this.locArr[1]);
     console.log("Timestamp is :", this.locArr[2]);
   }
+
+ 
+
 }
+
+
 
 export default Navig;
     
