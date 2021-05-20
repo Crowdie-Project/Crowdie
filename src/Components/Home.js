@@ -1,14 +1,28 @@
-//REACT IMPORTS
+//LIBRARY IMPORTS
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View,ScrollView,Text,Pressable, Button } from 'react-native';
-import Report from './Report';
-import {supabase} from './Supabase.js';
-import MapEditor from './MapEditor';
 import timeSeriesClustering from 'time-series-clustering';
-import Timeline from './Timeline';
 import moment from 'moment';
 import AnomalyDetection from './AnomalyDetection';
 
+import {readString} from 'react-papaparse';
+
+
+//LOCAL IMPORTS
+import {supabase} from './Supabase.js';
+import {RECHandler} from './RECHandler.js';
+
+import Report from './Report';
+import MapEditor from './MapEditor';
+
+//import Timeline from './Timeline';
+import Filtering from './Filtering';
+import NearEvent from './NearEvent';
+
+
+//ADDITIONAL DATA
+import cats from '../reportCodes/categories.csv';
+import ccolors from '../reportCodes/code-colors.csv';
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -19,6 +33,12 @@ const Home = () => {
 //date
 const [startDate, setStartDate] = useState(null);
 const [endDate, setEndDate] = useState(null);
+const [selectedCategories,setSelectedCategories] = useState([]);
+
+const [suggestions, setSuggestions] = useState([]);
+const [currLoc,setCurrLoc] = useState([]);
+
+
 
 
 const onChange = dates => {
@@ -42,33 +62,65 @@ const onChange = dates => {
       // if (result.type === "recovery") {
       //     setRecoveryToken(result.access_token);
       // }
+      setFilter(selectedCategories);
      
       fetchReports().catch(console.error);
-  }, [selectedFilter,startDate,endDate]);
+      fetchSuggestions().catch(console.error);
+
+  }, [selectedFilter,selectedCategories,startDate,endDate]);
   
     const fetchReports = async () => {
       var filterStart = startDate;
       var filterEnd = moment(endDate).add(1,'days');
       if (startDate == null && endDate == null){
-        filterStart = moment(new Date()).subtract(24,'hours');
+        filterStart = moment(new Date()).subtract(1,'days');
         filterEnd = new Date();
       }
+     var filterCategory = selectedFilter;
+       if (selectedCategories.length == 0){
+     
+         filterCategory = Colors.map((color) => color.CategoryCode) 
+     }
+      
       let { data: reports, error } = await supabase
           .from("TestReports")
+          //.from("TestReports2")
           .select("*")
-          .in('CategoryCode', selectedFilter)
+          .in('CategoryCode',filterCategory)
           .gt('TIME',moment(filterStart).format('YYYY-MM-DDTHH:MM:SS') )
           .lt('TIME',moment(filterEnd).format('YYYY-MM-DDTHH:MM:SS'))
           .order("id", { ascending: false });
       if (error) console.log("error", error);
-      else setReports(reports);
+      else{
+        console.log("Using TestReports instead of TestReports2!");
+        console.log("Remember to later switch to the new database for accomodating the new table!");
+        //console.log("Using TestReports2 instead of TestReports!");
+        setReports(reports);
+      }
   };
   
-  
+  //TODO MIGRATE
   useEffect(() => {
     fetchMainCategories().catch(console.error);
+    //fetchSomeMore().catch(console.error);
   },[]);
   
+  //2nd Version
+  /*const fetchMainCategories = async () => {
+    let { data: EventCategories, error } = await fetch(cats)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+      if (error)console.log("error", error);
+      else{
+        console.log("HMMM");
+        console.log(EventCategories);
+        setEventCategories(EventCategories);
+        //console.log("CATS!");
+        //console.log(EventCategories);
+      }
+  }*/
+
+  //1st Version
   const fetchMainCategories = async () => {
       
     let { data: EventCategories, error } = await supabase
@@ -76,14 +128,45 @@ const onChange = dates => {
           .select("*")
           // Filters
           .eq('ParentCode', '0')
-          if (error) console.log("error", error);
-          else setEventCategories(EventCategories);
+          if (error)console.log("error", error);
+          else{
+            setEventCategories(EventCategories);
+            console.log("CATS!");
+            console.log(EventCategories);
+          }
   };
+
+  /*const fetchSomeMore = async () => {
+    fetch(cats)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+    .then(c => {
+      console.log('csv decoded:', c);
+  },[]);
+  }*/
+
+  console.log("SPECIAL DELIVERY!");
+  console.log(RECHandler.listAllCategories());
   
   useEffect(() => {
     fetchCategoryColors().catch(console.error);
   },[]);
+
+  /*LEGACY
+  */
+
+  //2nd Version
+  /*const fetchCategoryColors = async () => {
+    let { data: Colors, error } = await fetch(ccolors)
+    .then(r => r.text())
+    .then(csv => readString(csv,{header:true}))
+      if (error)console.log("error", error);
+      else setColors(Colors);
+      let defaultFilter = Colors.map((color) => color.CategoryCode);  
+      setFilter(defaultFilter);
+  }*/
   
+  //1st Version
   const fetchCategoryColors = async () => {
       
     let { data: Colors, error } = await supabase
@@ -94,7 +177,10 @@ const onChange = dates => {
         let defaultFilter = Colors.map((color) => color.CategoryCode)  
         setFilter(defaultFilter)
   };
-  
+
+
+  //LEGACY END
+
   const filterSelected = (newFilter) => {
     if (selectedFilter == newFilter){
       setFilter(Colors.map((color) => color.CategoryCode))
@@ -150,8 +236,62 @@ function convertTime(timestamptz) {
 //      return convertedData;
 // });
 
+
 var normalReports = [];
 
+// var reportlist = reports.map((report) => {
+//   var container = {};
+//   container["id"] = report.id;
+//   container["value"] = convertTime(report.TIME);
+//   return container;
+// });
+
+
+// var convertedData = {};
+// convertedData["data"] = reportlist;
+
+useEffect(() => {
+ 
+  fetchSuggestions().catch(console.error);
+}, [EventCategories]);
+
+const fetchSuggestions = async () => {
+
+  navigator.geolocation.getCurrentPosition(
+    position => {
+       setCurrLoc([position.coords.latitude,position.coords.longitude]);
+    });
+  
+  const { data: suggestions, error } = await supabase
+      .from("TestReports")
+      .select("*")
+      .gt('LON', currLoc[1]-0.1)
+      .lt('LON',currLoc[1]+0.1)
+      .gt('LAT', currLoc[0]-0.1)
+      .lt('LAT', currLoc[0]+0.1)
+      .gt('TIME',moment(new Date()).subtract(1,'days').format('YYYY-MM-DDTHH:MM:SS') )
+//      .lt('TIME',moment(new Date()).format('YYYY-MM-DDTHH:MM:SS'))
+      .order("id", { ascending: false });
+  if (error) console.log("error", error);
+  else setSuggestions(suggestions);
+};
+
+const confirmReport = async (id, liked) => {
+  
+   var value = 0;
+   if(liked){
+     value = -1;
+   }else{
+     value = 1;
+   }
+
+  const { data, error } = await supabase
+  .rpc('updatecount', { value_to_add: value, row_id: id})
+
+fetchReports()
+fetchSuggestions()
+
+};
 
     return (
         <View style={styles.container}>
@@ -163,60 +303,59 @@ var normalReports = [];
            setEventCategories={setEventCategories}
            user={user}
            setUser={setUser}
+           suggestions={suggestions}
          />
   
-       <Timeline 
+       <Filtering 
        startDate={startDate}
        endDate={endDate}
        onChange={onChange}
+       eventCategories={EventCategories}
+       selectedCategories={selectedCategories}
+       setSelectedCategories={setSelectedCategories}
        />
       {console.log(endDate)}
-       <View style={styles.reportWrapper}>
-                 <Text style={styles.header}>Reported Events</Text>
-                   <ScrollView style={styles.scrollview}>
-  {/* {convertedDataList.map((convertedData) =>
-   (getClusters(convertedData, clusterConfig).clusters.map((cluster) => (
-    <Text>
-   {cluster.ids.map( (id) => (
-      <Text>{"\n"}code:{reports.filter( report => report.id == id).map( report => report.CODE)}, time: {reports.filter( report => report.id == id).map( report => report.TIME)}</Text>
-   ))} 
-    </Text>
-   )))
-  )}
-     */}
-      
-
-          
-                    {reports.length ? (
+      <View style={styles.reportWrapper}>
+      <View style={styles.nearHeaderContainer}>
+          <Text style={styles.nearHeader}>Events Around You</Text>
+</View>
+        <ScrollView style={styles.scrollView}>
+      {suggestions.length ? (suggestions.map((suggestion) => ( 
+     <NearEvent report={suggestion}
+     confirmReport={confirmReport}/>
+          /*{reports.length ? (
+              reports.map((report) => (
+                  <Text key={report.id} style={styles.reports}>
+                    code: {report.CODE} lat: {report.LAT} lon: {report.LON}
+                  </Text>
+              ))
+          ) : (
+              <Text style={styles.reports}>
+                  No news yet!
+              </Text>
+          )}*/
+         ))) :( 
+    <View style={styles.empty}>
+         /*           {reports.length ? (
                         reports.map((report) => (
                             <Text key={report.id} style={styles.reports}>
                               code: {report.CODE} lat: {report.LAT} lon: {report.LON}
                             </Text>
                         ))
-                    ) : (
-                        <Text style={styles.reports}>
-                            You do have any reported events yet!
-                        </Text>
-                    )}
-                
-                  
-                </ScrollView>
+                    ) : ( */
 
-          </View>  
-        <MapEditor points={normalReports} colors={Colors} filter={selectedFilter}/>   
-     
-        <View style={styles.filterContainer}>
-          
-         {Colors.map((color) => (
-           <Pressable
-           style={[styles.button,{backgroundColor:color.HexCode}]}
-           onPress={() => filterSelected(color.CategoryCode)}
-         >
-           <Text style={styles.textStyle}>{color.CategoryCode}</Text>
-         </Pressable>
-         ))}
+           <Text style={styles.reports}>
+            There are no new events around you.
        
-        </View>
+        </Text> 
+    
+</View>
+          )}
+          </ScrollView>
+          </View>
+        /* <MapEditor points={normalReports} colors={Colors} filter={selectedFilter}/>   */
+        <MapEditor points={reports} colors={Colors} filter={selectedFilter}/>   
+      
      {!user ? <View/> :
       <View style={styles.logoutContainer}>
         <Pressable 
@@ -239,18 +378,10 @@ const styles = StyleSheet.create({
       flexDirection: 'row'
     },
     reportWrapper: {
-      backgroundColor: '#fff',
       padding: 15,
       position: "absolute",
       zIndex: 9999,
-      left: 15,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 3
-      },
-      shadowOpacity: 0.5,
-      shadowRadius: 10
+      left: 15
     },
     filterContainer: {
       padding: 10,
@@ -258,12 +389,38 @@ const styles = StyleSheet.create({
       zIndex: 9999,
       right: 10
     },
-    scrollview: {
-      height: 250,
+    suggestions:{
+       padding: 10,
+       backgroundColor: "#FFF",
+       marginBottom:5,
+    },
+    empty: {
+      backgroundColor: "#fff",
+      padding: 15,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 3
+      },
+      shadowOpacity: 0.3,
+      shadowRadius: 10
+    },
+    scrollView:{
+      height: 300,
       padding: 5
     },
+    nearHeaderContainer:{
+      padding: 5,
+      backgroundColor: "purple"
+    },
+    nearHeader:{
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: "#fff",
+      textAlign: "center"
+    },
     header: {
-      fontSize: 24,
+      fontSize: 20,
       fontWeight: 'bold',
       marginBottom: 10
     },
@@ -310,6 +467,19 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
+      },
+      buttonConfirm:{
+        backgroundColor: "#000",
+        padding: 5,
+        justifyContent: 'center',
+        width: 80,
+        marginTop: 10,
+        alignSelf: "flex-end"
+      },
+      confirmText:{
+        fontSize: 16,
+        color: "#fff",
+        textAlign: "center",
       }
   });
 
