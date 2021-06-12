@@ -53,7 +53,7 @@ export default function AnomalyDetection(data) {
     let normalReps = [];
     let codesHM = createCodesHMap(data);
 
-    console.log(repCodes);
+    //console.log(repCodes);
     
     Array.from(repCodes).forEach((code) => {
   
