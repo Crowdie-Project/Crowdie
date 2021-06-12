@@ -92,10 +92,10 @@ const onChange = dates => {
           .order("id", { ascending: false });
       if (error) console.log("error", error);
       else{
-        console.log("Using TestReports instead of TestReports2!");
-        console.log("Remember to later switch to the new database for accomodating the new table!");
+        //console.log("Using TestReports instead of TestReports2!");
+        //console.log("Remember to later switch to the new database for accomodating the new table!");
         //console.log("Using TestReports2 instead of TestReports!");
-        console.log(reports)
+        //console.log(reports)
         setReports(reports);
       }
   };
@@ -132,8 +132,8 @@ const onChange = dates => {
           if (error)console.log("error", error);
           else{
             setEventCategories(EventCategories);
-            console.log("CATS!");
-            console.log(EventCategories);
+            //console.log("CATS!");
+            //console.log(EventCategories);
           }
   };
 
@@ -146,8 +146,8 @@ const onChange = dates => {
   },[]);
   }*/
 
-  console.log("SPECIAL DELIVERY!");
-  console.log(RECHandler.listAllCategories());
+  //console.log("SPECIAL DELIVERY!");
+  //console.log(RECHandler.listAllCategories());
   
   useEffect(() => {
     fetchCategoryColors().catch(console.error);
@@ -210,8 +210,8 @@ function convertTime(timestamptz) {
   var date = timestamptz.substring(0,t+9)+"Z"
   var d = new Date(date);
   var myEpoch = d.getTime();
-  console.log(date)
-  console.log(myEpoch)
+  //console.log(date)
+  //console.log(myEpoch)
   return myEpoch;
  
 };
@@ -315,7 +315,6 @@ normalReports = AnomalyDetection(reports);
        selectedCategories={selectedCategories}
        setSelectedCategories={setSelectedCategories}
        />
-      {console.log(endDate)}
       <View style={styles.reportWrapper}>
       <View style={styles.nearHeaderContainer}>
           <Text style={styles.nearHeader}>Events Around You</Text>
