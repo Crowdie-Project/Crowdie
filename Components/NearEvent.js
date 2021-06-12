@@ -10,9 +10,7 @@ const NearEvent = ({report,confirmReport}) => {
     
     const likefunction = async (id) => {
          setLiked((isLiked) => !isLiked);
-
          confirmReport(id,liked);
-      
     }
 
     useEffect(() => {

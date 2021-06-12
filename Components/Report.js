@@ -89,13 +89,35 @@ useEffect(() => {
 }, [selectedEvent]);
 
 const checkIfExist = async () =>{
-  const { data: sameEvent, error } = await supabase
+
+  //SKIPPING!
+
+  /*const { data: sameEvent, error } = await supabase
   .from("TestReports")
   .select("CODE")
   .eq("CODE",selectedEvent)
   .gt('TIME',moment(new Date()).subtract(1,'days').format('YYYY-MM-DDTHH:MM:SS') )
   if (error) setError(error.message);
-  else setSameEvent(sameEvent);
+  else setSameEvent(sameEvent);*/
+
+  /*console.log("HERE");
+  console.log(reports);
+  //PERFORM ANOMALYDETECTION ON THE REPORTS
+
+  let normalReps = AnomalyDetection(reports);
+  console.log(normalReps);
+
+  //LAT LON FILTER
+  console.log("ADD LAT LON FILTER NOW!")
+
+  //COMPARE TO SELECTED EVENT
+  console.log("ADD SELECTED EVENT CHECK HERE!")
+  selectedEvent; */ 
+
+  //if (error) setError(error.message);
+  //else setSameEvent(sameEvent);
+  //TODO: FIX
+  setSameEvent([]);
 
 }
 
@@ -120,6 +142,8 @@ const checkIfExist = async () =>{
    }
 
    if (sameEvents && sameEvents.length){
+    //console.log("SAME GAME");
+    //console.log(sameEvents);
      alert('This incedent has already been reported, you can confirm it');
      return;
    }

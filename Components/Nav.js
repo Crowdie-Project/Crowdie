@@ -20,7 +20,7 @@ class Navig extends Component {
 
       //APPLY PERTURBATION HERE
       //console.log("APPLYING PERTURBATION HERE:");
-      console.log("TODO: MODIFY EPS");
+      //console.log("TODO: MODIFY EPS");
 
       //var epsilon = st.epsilon / st.levels[level].radius;
       var epsilon = 1.0;
@@ -30,7 +30,7 @@ class Navig extends Component {
       this.locArr[0] = noisy.longitude;
       this.locArr[1] = noisy.latitude;
 
-      this.showLocs();  
+      //this.showLocs();  
     });
     return this.locArr;
   }
