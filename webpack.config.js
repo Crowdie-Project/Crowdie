@@ -24,17 +24,15 @@ module.exports = async function (env, argv) {
       dynamicTyping: true,
       skipEmptyLines: true
     },
-    plugins: [    
-    new webpack.DefinePlugin({           
+  }
+  );
+
+  /*config.plugins.push(new webpack.DefinePlugin({           
       //NODE_ENV: JSON.stringify(process.env.NODE_ENV),      
       //API_HOST: JSON.stringify(process.env.API_HOST)
       SUPABASE_URL: JSON.stringify(process.env.SUPABASE_URL),
       SUPABASE_KEY: JSON.stringify(process.env.SUPABASE_KEY)
-    })
-    ],
-  }
-  );
-
+  }));*/
 
 
   /*config.module.rules.push(
