@@ -8,7 +8,7 @@
 // NOTE: env.SUPABASE_URL and env.SUPABASE_KEY are ONLY
 // available if __DEV__ is true, NULL otherwise. 
 
-import env from '../config/env';
+//import env from '../config/env';
 import AsyncStorage from '@react-native-community/async-storage'
 
 //SUPABASE IMPORTS
@@ -18,6 +18,10 @@ import { createClient } from '@supabase/supabase-js'
 
 export {supabase};*/
 
-export const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
+/*export const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
+  localStorage: AsyncStorage,
+})*/
+
+export const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
   localStorage: AsyncStorage,
 })
