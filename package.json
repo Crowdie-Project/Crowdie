@@ -6,7 +6,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "build": "expo build:web"
+    "build": "expo build:web",
+  },
+  "engines": {
+    "node": "14.x"
   },
   "dependencies": {
     "@react-native-community/async-storage": "~1.12.0",
