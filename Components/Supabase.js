@@ -24,6 +24,10 @@ export {supabase};*/
   localStorage: AsyncStorage,
 })*/
 
-export const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
+/*export const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
+  localStorage: AsyncStorage,
+})*/
+
+export const supabase = createClient(process.env.NPM_CONFIG_SUPABASE_URL, process.env.NPM_CONFIG_SUPABASE_KEY, {
   localStorage: AsyncStorage,
 })
