@@ -8,6 +8,8 @@
 // NOTE: env.SUPABASE_URL and env.SUPABASE_KEY are ONLY
 // available if __DEV__ is true, NULL otherwise. 
 
+console.log(process.env);
+
 //import env from '../config/env';
 import AsyncStorage from '@react-native-community/async-storage'
 
