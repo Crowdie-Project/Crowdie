@@ -41,7 +41,7 @@
     "react-papaparse": "^3.14.0",
     "rec-handler": "https://github.com/Crowdie-Project/REC-Handler.git#crowdie-hack",
     "time-series-clustering": "^0.1.0",
-    "webpack": "^5.38.1"
+    "webpack": "4.46.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
