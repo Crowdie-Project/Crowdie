@@ -9,6 +9,7 @@
 // available if __DEV__ is true, NULL otherwise. 
 
 console.log(process.env);
+console.log(process.ENV);
 
 //import env from '../config/env';
 import AsyncStorage from '@react-native-community/async-storage'
@@ -24,10 +25,10 @@ export {supabase};*/
   localStorage: AsyncStorage,
 })*/
 
-/*export const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
-  localStorage: AsyncStorage,
-})*/
-
-export const supabase = createClient(process.env.NPM_CONFIG_SUPABASE_URL, process.env.NPM_CONFIG_SUPABASE_KEY, {
+export const supabase = createClient(process.ENV.SUPABASE_URL, process.ENV.SUPABASE_KEY, {
   localStorage: AsyncStorage,
 })
+
+/*export const supabase = createClient(process.env.NPM_CONFIG_SUPABASE_URL, process.env.NPM_CONFIG_SUPABASE_KEY, {
+  localStorage: AsyncStorage,
+})*/
