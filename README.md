@@ -1,5 +1,7 @@
 # Crowdie
 
+**A Crowdsourced News Platform**
+
 <p align="center">
   <a href="https://crowdie.readthedocs.io/">
          <img alt="Documentation" src="https://img.shields.io/readthedocs/crowdie">
